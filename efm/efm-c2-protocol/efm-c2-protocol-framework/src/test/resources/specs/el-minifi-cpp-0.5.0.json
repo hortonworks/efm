@@ -1,0 +1,11 @@
+{
+  "operations" : {
+    "isNull": {
+      "name": "isNull",
+      "description": "The isNull function returns true if the subject is null, false otherwise. This is typically used to determine if an attribute exists.",
+      "args": {},
+      "subject": "Any",
+      "returnType": "Boolean"
+    }
+  }
+}

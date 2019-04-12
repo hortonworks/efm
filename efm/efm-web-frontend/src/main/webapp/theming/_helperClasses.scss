@@ -1,0 +1,103 @@
+/*
+ * (c) 2018-2019 Cloudera, Inc. All rights reserved.
+ *
+ *  This code is provided to you pursuant to your written agreement with Cloudera, which may be the terms of the
+ *  Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+ *  to distribute this code.  If you do not have a written agreement with Cloudera or with an authorized and
+ *  properly licensed third party, you do not have any rights to this code.
+ *
+ *  If this code is provided to you under the terms of the AGPLv3:
+ *   (A) CLOUDERA PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+ *   (B) CLOUDERA DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+ *       LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+ *   (C) CLOUDERA IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+ *       FROM OR RELATED TO THE CODE; AND
+ *   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, CLOUDERA IS NOT LIABLE FOR ANY
+ *       DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED
+ *       TO, DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR
+ *       UNAVAILABILITY, OR LOSS OR CORRUPTION OF DATA.
+ */
+
+.fa-rotate-45 {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.italic {
+  font-style: italic;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block !important;
+}
+
+.hidden {
+  display: none;
+}
+
+.info {
+  color: $blue8;
+}
+
+.authorized {
+  color: $red2;
+}
+
+.suspended {
+  color: $green3;
+}
+
+.nonconfigurable {
+  background: $grey9;
+}
+
+.selected-nonconfigurable {
+  background: repeating-linear-gradient(-45deg, $grey5, $grey5 10px, #fff 10px, #fff 20px) !important;
+}
+
+.prevent-draggable {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.invalid {
+  color: $orange1;
+}
+
+.unset {
+  font-style: italic;
+  font-weight: normal;
+  color: $grey3;
+}
+
+.field-header {
+  font-size: 11px;
+  color: $grey3;
+  font-weight: 300;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+ul.unordered {
+  list-style-type: disc;
+  margin-left: 15px;
+}
+
+ul.unordered li {
+  padding: 3px 0px;
+}

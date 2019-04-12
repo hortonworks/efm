@@ -1,0 +1,112 @@
+# (c) 2018-2019 Cloudera, Inc. All rights reserved.
+#
+#  This code is provided to you pursuant to your written agreement with Cloudera, which may be the terms of the
+#  Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+#  to distribute this code.  If you do not have a written agreement with Cloudera or with an authorized and
+#  properly licensed third party, you do not have any rights to this code.
+#
+#  If this code is provided to you under the terms of the AGPLv3:
+#   (A) CLOUDERA PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+#   (B) CLOUDERA DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+#       LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+#   (C) CLOUDERA IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+#       FROM OR RELATED TO THE CODE; AND
+#   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, CLOUDERA IS NOT LIABLE FOR ANY
+#       DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED
+#       TO, DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR
+#       UNAVAILABILITY, OR LOSS OR CORRUPTION OF DATA.
+version: "3.5"
+
+# This is an overlay configuration for the DFM docker-compose environment.
+# It adds a reverse proxy (Traefik) and configures other services appropriately.
+# Use this file in combination with the base configuration file other desired overlays.
+# For example:
+#
+#   docker-compose -f docker-compose-base.yml -f docker-compose-proxy.yml up -d
+#
+
+services:
+
+  proxy:
+    image: traefik # The official Traefik docker image
+    command: --api --docker # Enables the web UI and tells Traefik to listen to docker
+    ports:
+      - "80:80"     # The HTTP port
+      - "8080:8080" # The Web UI (enabled by --api)
+    networks:
+      - public
+      - private
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
+    labels:
+      traefik.enable: false # Prevent creating a frontent/backend for this container
+
+  registry:
+    labels:
+      # technically there is no need to expose this as a user-facing service, but it can be useful for testing.
+      traefik.user.frontend.rule: "Host:localhost;PathPrefix:/nifi-registry"
+
+  nifi:
+    ports: [] # clear any port mappings from the base compose config
+    environment:
+      - NIFI_WEB_HTTP_PORT_FORWARDING=80  # default http s2s port when running in standalone mode
+      - NIFI_REMOTE_INPUT_HOST=proxy      # default http s2s host when running in standalone mode
+      - NIFI_REMOTE_INPUT_SECURE=false    # default http s2s flag when running in standalone mode
+      # The following config values set custom s2s routing rules when a s2s client connects through the external/user facing proxy hostname
+      - NIFI_REMOTE_ROUTE_HTTP_EXTERNAL_WHEN=$${X-Forwarded-Host:contains('localhost')}
+      - NIFI_REMOTE_ROUTE_HTTP_EXTERNAL_HOSTNAME=localhost
+      - NIFI_REMOTE_ROUTE_HTTP_EXTERNAL_PORT=80
+      - NIFI_REMOTE_ROUTE_HTTP_EXTERNAL_SECURE=false
+    labels:
+      traefik.user.port: 8080
+      traefik.user.frontend.rule: "Host:localhost;PathPrefix:/nifi"
+      traefik.user.frontend.headers.customRequestHeaders: "X-ProxyHost:localhost||X-ProxyPort:80"  # Can be removed after NIFI-5748 is released (1.9.0)
+      traefik.service.port: 8080
+      traefik.service.frontend.rule: "Host:proxy;PathPrefix:/nifi"
+      traefik.service.frontend.headers.customRequestHeaders: "X-ProxyHost:proxy||X-ProxyPort:80"  # Can be removed after NIFI-5748 is released (1.9.0)
+
+  flowops:
+    labels:
+      traefik.enable: false
+
+  c2:
+    ports: []
+    environment:
+      - EFM_DASHBOARD_BASE_URL=http://localhost/grafana
+    labels:
+      # technically there is no need to expose this as a user-facing service, but it can be useful for testing.
+      traefik.user.frontend.rule: "Host:localhost;PathPrefix:/efm/"
+      traefik.service.frontend.rule: "Host:proxy;PathPrefix:/efm/"
+
+  agent:
+    environment:
+      - C2_HEARTBEAT_URL=http://proxy:80/efm/api/c2-protocol/heartbeat
+      - C2_ACK_URL=http://proxy:80/efm/api/c2-protocol/acknowledge
+    labels:
+      traefik.enable: false
+
+  agent_techops:
+    environment:
+      - C2_HEARTBEAT_URL=http://proxy:80/efm/api/c2-protocol/heartbeat
+      - C2_ACK_URL=http://proxy:80/efm/api/c2-protocol/acknowledge
+    labels:
+      traefik.enable: false
+
+  java_agent:
+    environment:
+      - C2_HEARTBEAT_URL=http://proxy:80/efm/api/c2-protocol/heartbeat
+      - C2_ACK_URL=http://proxy:80/efm/api/c2-protocol/acknowledge
+    labels:
+      traefik.enable: false
+
+  prometheus:
+    ports: []
+    labels:
+      traefik.enable: false
+
+  grafana:
+    ports: []
+    environment:
+      - PUBLIC_URL=http://localhost/grafana/
+    labels:
+      traefik.user.frontend.rule: "Host:localhost;PathPrefixStrip:/grafana/"

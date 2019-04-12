@@ -1,0 +1,126 @@
+/*
+ * (c) 2018-2019 Cloudera, Inc. All rights reserved.
+ *
+ *  This code is provided to you pursuant to your written agreement with Cloudera, which may be the terms of the
+ *  Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+ *  to distribute this code.  If you do not have a written agreement with Cloudera or with an authorized and
+ *  properly licensed third party, you do not have any rights to this code.
+ *
+ *  If this code is provided to you under the terms of the AGPLv3:
+ *   (A) CLOUDERA PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+ *   (B) CLOUDERA DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+ *       LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+ *   (C) CLOUDERA IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+ *       FROM OR RELATED TO THE CODE; AND
+ *   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, CLOUDERA IS NOT LIABLE FOR ANY
+ *       DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED
+ *       TO, DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR
+ *       UNAVAILABILITY, OR LOSS OR CORRUPTION OF DATA.
+ */
+
+@mixin slick-grid-theme($theme) {
+  $primaryColor: map-get(map-get($theme, primary), 500);
+  $primaryColorHover: map-get(map-get($theme, primary), 100);
+  $accentColor: map-get(map-get($theme, accent), 500);
+  $accentColorHover: map-get(map-get($theme, accent), 100);
+
+  /* DFM specific slick grid theme based on the supplied slick-default-theme.css */
+
+  .table-cell {
+    overflow: hidden;
+    white-space: nowrap;
+    float: left;
+  }
+
+  .slick-row {
+    position: absolute;
+    background: white;
+    line-height: 32px;
+    border: 1px solid transparent !important;
+  }
+
+  .slick-row.active {
+    background-color: $grey5;
+  }
+
+  .slick-row:hover {
+    background-color: $blue4;
+    border: 1px solid $blue3 !important;
+    height: 32px !important;
+  }
+
+  .slick-cell.invalid {
+    border-color: $orange1;
+  }
+
+  .slickgrid-editor > textarea {
+    resize: both;
+    font-size: 13px;
+    border: 1px solid $grey8;
+  }
+
+  .slick-viewport .fa {
+    color: $accentColor;
+    line-height: 32px;
+    margin-top: 0;
+    width: 12px;
+    height: 12px;
+  }
+
+  .slick-header.ui-state-default, .slick-headerrow.ui-state-default {
+    font-family: Roboto;
+    font-weight: 500;
+    font-size: 12px;
+    font-style: normal;
+    border: 0px;
+  }
+
+  .slick-header-column.ui-state-default {
+    border-right: 0px;
+    border-top: 1px solid transparent !important;
+    border-bottom: 1px solid $grey7 !important;
+    background: #fff;
+    font-size: 12px;
+    color: $grey3;
+    cursor: pointer;
+    padding: 8px 0px 8px 12px;
+  }
+
+  .slick-row.ui-widget-content, .slick-row.ui-state-active {
+    font-family: Roboto;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: normal;
+    color: #262626;
+    width: calc(100% - 2px);
+  }
+
+  .slick-cell, .slick-headerrow-column {
+    border: 0;
+    padding: 0 0 0 12px;
+    top: -1px;
+    height: 32px !important;
+    border-bottom: 1px solid $grey5;
+  }
+
+  .slickgrid-editor {
+    max-width: unset !important;
+  }
+
+  .slickgrid-nfel-editor {
+    max-width: unset !important;
+  }
+
+  .slick-cell.editable {
+    border-color: $grey5;
+    background: unset;
+  }
+
+  div.status-text {
+    padding-left: 4px;
+    line-height: 22px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    float: left;
+  }
+}

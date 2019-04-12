@@ -1,0 +1,143 @@
+/*
+ * (c) 2018-2019 Cloudera, Inc. All rights reserved.
+ *
+ *  This code is provided to you pursuant to your written agreement with Cloudera, which may be the terms of the
+ *  Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+ *  to distribute this code.  If you do not have a written agreement with Cloudera or with an authorized and
+ *  properly licensed third party, you do not have any rights to this code.
+ *
+ *  If this code is provided to you under the terms of the AGPLv3:
+ *   (A) CLOUDERA PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+ *   (B) CLOUDERA DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+ *       LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+ *   (C) CLOUDERA IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+ *       FROM OR RELATED TO THE CODE; AND
+ *   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, CLOUDERA IS NOT LIABLE FOR ANY
+ *       DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED
+ *       TO, DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR
+ *       UNAVAILABILITY, OR LOSS OR CORRUPTION OF DATA.
+ */
+
+@import '../../../../../node_modules/@nifi-fds/core/common/styles/globalVars';
+
+@mixin property-table-theme($theme) {
+  $primaryColor: map-get(map-get($theme, primary), 500);
+  $primaryColorHover: map-get(map-get($theme, primary), 100);
+  $accentColor: map-get(map-get($theme, accent), 500);
+  $accentColorHover: map-get(map-get($theme, accent), 100);
+
+  /*
+      Styles for the property table.
+  */
+
+  div.required-property-note {
+    font-weight: bold;
+    font-size: 12px;
+    float: left;
+    height: 28px;
+    line-height: 28px;
+    margin-left: 6px;
+  }
+
+  div.add-property {
+    float: right;
+    margin-bottom: 4px;
+    font-size: 16px;
+    text-transform: uppercase;
+  }
+
+  div.add-property-text {
+    float: left;
+    margin-left: 5px;
+    height: 19px;
+    line-height: 19px;
+    color: $grey1;
+  }
+
+  div.property-table {
+    min-height: 250px;
+
+    div.slick-viewport {
+      overflow-x: hidden !important;
+    }
+  }
+
+  /*
+      New property dialog
+  */
+
+  div.new-property-button-container {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+
+  /*
+      Styles for the property editor.
+  */
+
+  div.slickgrid-nfel-editor .nfel-editor, div.property-detail .nfel-editor {
+    margin-bottom: 5px;
+    margin-top: 10px;
+  }
+
+  div.edit-property-value {
+    height: 20px;
+    padding-right: 60px;
+  }
+
+  textarea.value-field {
+    float: left;
+    width: 95%;
+    height: 26px;
+    font-size: 11px !important;
+    resize: vertical;
+    overflow-y: auto;
+
+  }
+
+  div.string-check-container {
+    line-height: 20px;
+  }
+
+  div.string-check {
+    width: 12px;
+    height: 12px;
+    margin-top: 3px;
+  }
+
+  span.string-check-label {
+    font-size: 13px;
+    font-weight: normal;
+    color: $grey1;
+  }
+
+  div.value pre {
+    overflow: hidden;
+  }
+
+  /*
+      Table styles
+  */
+
+  div.nf-checkbox {
+    cursor: pointer;
+    width: 12px;
+    height: 12px;
+    float: left;
+    margin-right: 4px;
+  }
+
+  .nf-checkbox-label {
+    cursor: pointer;
+  }
+
+  div.checkbox-unchecked {
+    background: transparent url(../platform/flow-designer/images/inputCheckbox.png) no-repeat scroll top left;
+  }
+
+  div.checkbox-checked {
+    background: transparent url(../platform/flow-designer/images/inputCheckbox.png) no-repeat scroll top right;
+  }
+}

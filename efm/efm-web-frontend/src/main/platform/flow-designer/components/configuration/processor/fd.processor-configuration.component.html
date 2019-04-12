@@ -1,0 +1,263 @@
+<!--
+  (c) 2018-2019 Cloudera, Inc. All rights reserved.
+
+  This code is provided to you pursuant to your written agreement with Cloudera, which may be the terms of the
+  Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  to distribute this code.  If you do not have a written agreement with Cloudera or with an authorized and
+  properly licensed third party, you do not have any rights to this code.
+
+  If this code is provided to you under the terms of the AGPLv3:
+   (A) CLOUDERA PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+   (B) CLOUDERA DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+       LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+   (C) CLOUDERA IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+       FROM OR RELATED TO THE CODE; AND
+   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, CLOUDERA IS NOT LIABLE FOR ANY
+       DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED
+       TO, DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR
+       UNAVAILABILITY, OR LOSS OR CORRUPTION OF DATA.
+-->
+
+
+<div #processorConfigurationElementRef>
+    <div fxFill>
+        <form #processorConfigurationForm="ngForm">
+            <div fxLayout="row"
+                 fxLayoutAlign="space-between center"
+                 class="pad-top-sm pad-bottom-md pad-left-md pad-right-md">
+                <div class="pad-top-sm ellipsis">
+                    <div class="pad-bottom-sm ellipsis">
+                        <mat-card-subtitle>
+                            {{componentEntity.component.name}} (Processor)
+                        </mat-card-subtitle>
+                    </div>
+                    <mat-card-title>
+                        Configuration
+                    </mat-card-title>
+                </div>
+                <button mat-icon-button
+                        tabindex="-1"
+                        type="button"
+                        (click)="cancel()">
+                    <mat-icon>
+                        close
+                    </mat-icon>
+                </button>
+            </div>
+            <div class="sidenav-content">
+                <div class="pad-bottom-md pad-left-md pad-right-md"
+                     fxLayoutAlign="start center">
+                    <span class="sm-card-title">
+                        Settings
+                    </span>
+                </div>
+                <div class="pad-bottom-sm pad-left-md pad-right-md"
+                     fxLayoutAlign="start center">
+                    <mat-form-field floatLabel="always">
+                        <input matInput
+                               name="componentName"
+                               placeholder="PROCESSOR NAME"
+                               required
+                               [(ngModel)]="name">
+                    </mat-form-field>
+                </div>
+                <div class="pad-bottom-sm pad-left-md pad-right-md"
+                     fxLayoutAlign="start center">
+                    <mat-form-field class="pad-right-md"
+                                    floatLabel="always">
+                        <input matInput
+                               required
+                               name="penaltyDuration"
+                               placeholder="PENALTY DURATION"
+                               [(ngModel)]="penaltyDuration">
+                    </mat-form-field>
+                    <mat-form-field floatLabel="always">
+                        <input matInput
+                               required
+                               name="yieldDuration"
+                               placeholder="YIELD DURATION"
+                               [(ngModel)]="yieldDuration">
+                    </mat-form-field>
+                </div>
+                <div class="pad-left-md pad-right-md"
+                     fxLayoutAlign="start center">
+                    <div fxFill>
+                        <div class="field-header uppercase">
+                            Automatically Terminated Relationships
+                        </div>
+                        <div>
+                            <mat-checkbox *ngFor="let relationship of relationships"
+                                          [(ngModel)]="relationship.autoTerminate"
+                                          name="relationship-{{relationship.name}}"
+                                          class="push-right-md">
+                                {{relationship.name}}
+                            </mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="pad-top-lg pad-bottom-md pad-left-md pad-right-md"
+                     fxLayoutAlign="start center">
+                    <span class="sm-card-title">
+                        Scheduling
+                    </span>
+                </div>
+                <div class="pad-bottom-sm pad-left-md pad-right-md"
+                     fxLayoutAlign="start center">
+                    <div class="pad-right-sm form-field-button-container"
+                    fxFlex="50">
+                        <div class="field-header uppercase">
+                            SCHEDULING STRATEGY
+                        </div>
+                        <button class="form-field-button"
+                                mat-raised-button
+                                color="fds-regular"
+                                type="button"
+                                [matMenuTriggerFor]="schedulingStrategyMenu">
+                            <span class="form-field-button-label">
+                                {{getSchedulingStrategy()}}
+                            </span>
+                            <i class="fa fa-caret-down float-right"
+                               aria-hidden="true"></i>
+                        </button>
+                        <mat-menu #schedulingStrategyMenu="matMenu"
+                                  [overlapTrigger]="false">
+                            <button class="form-field-button-menu-item"
+                                    mat-menu-item
+                                    type="button"
+                                    (click)="schedulingStrategy = 'TIMER_DRIVEN'; validateForm();">
+                                <span>
+                                    Timer Driven
+                                </span>
+                            </button>
+                            <button class="form-field-button-menu-item"
+                                    mat-menu-item
+                                    type="button"
+                                    (click)="schedulingStrategy = 'EVENT_DRIVEN'; validateForm();">
+                                <span>
+                                    Event Driven
+                                </span>
+                            </button>
+                        </mat-menu>
+                    </div>
+                    <mat-form-field class="pad-left-sm"
+                                    fxFlex="50"
+                                    floatLabel="always">
+                        <input matInput
+                               placeholder="CONCURRENT TASKS"
+                               type="number"
+                               required
+                               min="1"
+                               pattern="^\d*[1-9]\d*$"
+                               name="concurrentlySchedulableTaskCount"
+                               [(ngModel)]="concurrentlySchedulableTaskCount">
+                    </mat-form-field>
+                </div>
+                <div *ngIf="isTimerDriven()"
+                     class="pad-bottom-sm pad-left-md pad-right-md">
+                    <mat-form-field floatLabel="always">
+                        <input matInput
+                               required
+                               placeholder="RUN SCHEDULE"
+                               name="schedulingPeriod"
+                               [(ngModel)]="schedulingPeriod">
+                    </mat-form-field>
+                </div>
+                <div class="pad-left-md pad-right-md"
+                     fxLayout="column"
+                     fxLayoutAlign="space-between stretch">
+                    <div class="field-header uppercase">
+                        Run Duration
+                    </div>
+                    <mat-slider fxFlex
+                                name="runDuration"
+                                [(ngModel)]="runDuration"
+                                min="0"
+                                max="{{RUN_DURATION_VALUES.length - 1}}">
+                    </mat-slider>
+                    <div fxLayoutAlign="row"
+                         fxLayoutAlign="space-between center">
+                        <div ngClass="{{runDurationValue.clazz}}" *ngFor="let runDurationValue of RUN_DURATION_VALUES">
+                            {{runDurationValue.name}}
+                        </div>
+                    </div>
+                </div>
+                <div class="pad-top-lg pad-bottom-md pad-left-md pad-right-md"
+                     fxLayoutAlign="space-between center">
+                    <div class="sm-card-title">
+                        Properties
+                    </div>
+                    <button *ngIf="supportsDynamicProperties()"
+                            mat-raised-button
+                            type="button"
+                            (click)="addProperty()"
+                            color="fds-regular">
+                        Add Property
+                    </button>
+                </div>
+                <div class="pad-left-md pad-right-md"
+                     fxLayoutAlign="start center">
+                    <flow-designer-property-table #processorPropertyTableComponent
+                                                  name="processorPropertyTable"
+                                                  [(ngModel)]="properties"
+                                                  [parentGroupId]="parentGroupId"
+                                                  [descriptors]="descriptors"
+                                                  [flowDesignerCanvasComponent]="flowDesignerCanvasComponent"
+                                                  [flowDesignerApi]="flowDesignerApi"
+                                                  [options]="options"></flow-designer-property-table>
+                </div>
+                <div class="pad-top-lg pad-bottom-md pad-left-md pad-right-md"
+                     fxLayoutAlign="start center">
+                    <span class="sm-card-title">
+                        About
+                    </span>
+                </div>
+                <div class="pad-bottom-md pad-left-md pad-right-md">
+                    <div class="field-header uppercase">
+                        Processor Id
+                    </div>
+                    <div>
+                        {{componentEntity.id}}
+                    </div>
+                </div>
+                <div class="pad-bottom-md pad-left-md pad-right-md">
+                    <div class="field-header uppercase">
+                        Processor Type
+                    </div>
+                    <div>
+                        {{processorTypeDisplayName}} {{componentEntity.component.bundle.version}}
+                    </div>
+                </div>
+                <div class="pad-bottom-md pad-left-md pad-right-md">
+                    <div class="field-header uppercase">
+                        Bundle
+                    </div>
+                    <div>
+                        {{componentEntity.component.bundle.group}} - {{componentEntity.component.bundle.artifact}}
+                    </div>
+                </div>
+                <div class="pad-top-lg pad-bottom-sm pad-left-md pad-right-md"
+                     fxLayoutAlign="start center">
+                    <span class="sm-card-title">
+                        Comments
+                    </span>
+                </div>
+                <div class="pad-bottom-sm pad-left-md pad-right-md"
+                     fxLayoutAlign="start center">
+                    <mat-form-field>
+                        <textarea matInput
+                                  name="comments"
+                                  [(ngModel)]="comments">
+                        </textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+            <button class="sidenav-close-button"
+                    mat-raised-button
+                    (click)="update()"
+                    color="fds-primary"
+                    [disabled]="unchanged || processorConfigurationForm.invalid">
+                Apply
+            </button>
+        </form>
+    </div>
+</div>

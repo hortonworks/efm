@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ~ (c) 2018-2019 Cloudera, Inc. All rights reserved.
+ ~
+ ~  This code is provided to you pursuant to your written agreement with Cloudera, which may be the terms of the
+ ~  Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+ ~  to distribute this code.  If you do not have a written agreement with Cloudera or with an authorized and
+ ~  properly licensed third party, you do not have any rights to this code.
+ ~
+ ~  If this code is provided to you under the terms of the AGPLv3:
+ ~   (A) CLOUDERA PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+ ~   (B) CLOUDERA DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+ ~       LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+ ~   (C) CLOUDERA IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+ ~       FROM OR RELATED TO THE CODE; AND
+ ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, CLOUDERA IS NOT LIABLE FOR ANY
+ ~       DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED
+ ~       TO, DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR
+ ~       UNAVAILABILITY, OR LOSS OR CORRUPTION OF DATA.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>efm</artifactId>
+        <groupId>com.cloudera.cem.efm</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>efm-web-app</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <swagger.ui.version>3.12.0</swagger.ui.version>
+    </properties>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+        <plugins>
+            <!-- Add manifest entries that we read at runtime to log -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Implementation-Version>${project.version}</Implementation-Version>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+            <!-- Add git.properties to the classpath to be included in the actuator info endpoint -->
+            <plugin>
+                <groupId>pl.project13.maven</groupId>
+                <artifactId>git-commit-id-plugin</artifactId>
+                <version>2.2.4</version>
+                <executions>
+                    <execution>
+                        <id>git-info</id>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                </configuration>
+            </plugin>
+            <!-- Build the Spring Boot executable jar -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
+                <executions>
+                    <execution>
+                        <id>build-info</id>
+                        <goals>
+                            <goal>build-info</goal>
+                        </goals>
+                        <configuration>
+                            <additionalProperties>
+                                <java.source>${maven.compiler.source}</java.source>
+                                <java.target>${maven.compiler.target}</java.target>
+                            </additionalProperties>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>repackage</id>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                        <configuration>
+                            <!-- The layout property controls the Spring Boot main Launcher class:
+                               ~    jar -> JarLauncher,
+                               ~    war -> WarLauncher,
+                               ~    ZIP -> PropertiesLauncher
+                               ~ We want PropertiesLauncher so we have control over the classpath via loader.path
+                               ~ See: https://docs.spring.io/spring-boot/docs/current/reference/html/executable-jar.html -->
+                            <layout>ZIP</layout>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Generate the swagger.json spec as part of the build. -->
+            <plugin>
+                <groupId>com.github.kongchen</groupId>
+                <artifactId>swagger-maven-plugin</artifactId>
+                <version>3.1.5</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <apiSources>
+                                <apiSource>
+                                    <locations>
+                                        <location>com.cloudera.cem.efm</location>
+                                    </locations>
+                                    <schemes>
+                                        <scheme>http</scheme>
+                                        <scheme>https</scheme>
+                                    </schemes>
+                                    <basePath>/efm/api</basePath>
+                                    <info>
+                                        <title>Cloudera Edge Flow Manager REST API</title>
+                                        <version>${project.version}</version>
+                                        <description>
+                                            This REST API provides remote access to the EFM Server.
+                                            Endpoints that are marked as [BETA] are subject to change in future releases of the application without backwards compatibility and without a major version change.
+                                        </description>
+                                        <license>
+                                            <url>https://www.gnu.org/licenses/agpl-3.0.en.html</url>
+                                            <name>GNU Affero General Public License (AGPL), Version 3</name>
+                                        </license>
+                                    </info>
+                                    <swaggerDirectory>${project.build.directory}/swagger</swaggerDirectory>
+                                </apiSource>
+                            </apiSources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.googlecode.maven-download-plugin</groupId>
+                <artifactId>download-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <id>download-swagger-ui</id>
+                        <!-- This plugin downloads swagger UI static assets during the build, to be
+                             served by the web app to render the dynamically generated Swagger spec.
+                             For offline development, or to build without the swagger UI, activate
+                             the "no-swagger-ui" maven profile during the build with the "-P" flag -->
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
+                        <configuration>
+                            <url>
+                                https://github.com/swagger-api/swagger-ui/archive/v${swagger.ui.version}.tar.gz
+                            </url>
+                            <unpack>true</unpack>
+                            <outputDirectory>${project.build.directory}
+                            </outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>bundle-swagger-ui</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <sequential>
+                                    <echo>Copy static Swagger UI files to target</echo>
+                                    <copy todir="${project.build.directory}/classes/static/swagger">
+                                        <fileset dir="${project.build.directory}/swagger-ui-${swagger.ui.version}/dist">
+                                            <include name="**"/>
+                                        </fileset>
+                                    </copy>
+                                    <echo>Disable schema validation by removing validatorUrl</echo>
+                                    <replace token="https://online.swagger.io/validator"
+                                             value=""
+                                             dir="${project.build.directory}/classes/static/swagger">
+                                        <include name="swagger-ui-bundle.js"/>
+                                        <include name="swagger-ui-standalone-preset.js"/>
+                                    </replace>
+                                    <echo>Rename 'index.html' to 'ui.html'</echo>
+                                    <move file="${project.build.directory}/classes/static/swagger/index.html"
+                                          tofile="${project.build.directory}/classes/static/swagger/ui.html"/>
+                                    <echo>Replace default swagger.json location</echo>
+                                    <replace token="http://petstore.swagger.io/v2/swagger.json"
+                                             value="/efm/swagger/swagger.json"
+                                             dir="${project.build.directory}/classes/static/swagger">
+                                        <include name="ui.html"/>
+                                    </replace>
+                                    <echo>Copy swagger.json into static assets folder</echo>
+                                    <copy todir="${project.build.directory}/classes/static/swagger">
+                                        <fileset dir="${project.build.directory}/swagger">
+                                            <include name="*.json"/>
+                                        </fileset>
+                                    </copy>
+                                </sequential>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>frontend</id>
+            <!-- This profile bundles the UI from efm-web-frontend with the efm-web-app jar
+                 This profile is active by default. Disable using `-D headless` or `P !frontend` -->
+            <activation>
+                <property>
+                    <name>!headless</name>
+                </property>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.cloudera.cem.efm</groupId>
+                    <artifactId>efm-web-frontend</artifactId>
+                    <version>${project.version}</version>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <!-- Copy frontend files from c2-web-frontend JAR into the target/classes/static dir,
+                         which is a default Spring Boot server location for static files -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>unpack</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>unpack-dependencies</goal>
+                                </goals>
+                                <configuration>
+                                    <includeGroupIds>com.cloudera.cem.efm</includeGroupIds>
+                                    <includeArtifactIds>efm-web-frontend</includeArtifactIds>
+                                    <outputDirectory>${project.build.directory}/classes/</outputDirectory>
+                                    <excludes>META-INF/**,filters/**</excludes>
+                                    <overWriteReleases>true</overWriteReleases>
+                                    <overWriteSnapshots>true</overWriteSnapshots>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>no-swagger-ui</id>
+            <!-- Activate this profile with "-P no-swagger-ui" to disable the Swagger UI
+                 static assets from being downloaded and bundled with the web api WAR. -->
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.googlecode.maven-download-plugin</groupId>
+                        <artifactId>download-maven-plugin</artifactId>
+                        <version>1.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>download-swagger-ui</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <id>bundle-swagger-ui</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <!-- Project dependencies -->
+        <dependency>
+            <groupId>com.cloudera.cem.efm</groupId>
+            <artifactId>efm-commons-security</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.cloudera.cem.efm</groupId>
+            <artifactId>efm-c2-protocol-web-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.cloudera.cem.efm</groupId>
+            <artifactId>efm-c2-protocol-framework</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.cloudera.cem.efm</groupId>
+            <artifactId>efm-flow-designer-web-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.cloudera.cem.efm</groupId>
+            <artifactId>efm-flow-designer-framework</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
+            <version>5.7</version>
+        </dependency>
+
+        <!-- Spring dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring.boot.version}</version>
+            <exclusions>
+                <!-- we will be using embedded jetty in place of tomcat -->
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jetty</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <version>${micrometer.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <version>${spring.boot.version}</version>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Test Dependencies -->
+        <dependency>
+            <groupId>com.cloudera.cem.efm</groupId>
+            <artifactId>efm-commons-test</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.cloudera.cem.efm</groupId>
+            <artifactId>efm-web-client</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>${spring.boot.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+</project>

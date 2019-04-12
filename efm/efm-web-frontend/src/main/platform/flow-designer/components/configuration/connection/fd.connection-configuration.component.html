@@ -1,0 +1,167 @@
+<!--
+  (c) 2018-2019 Cloudera, Inc. All rights reserved.
+
+  This code is provided to you pursuant to your written agreement with Cloudera, which may be the terms of the
+  Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  to distribute this code.  If you do not have a written agreement with Cloudera or with an authorized and
+  properly licensed third party, you do not have any rights to this code.
+
+  If this code is provided to you under the terms of the AGPLv3:
+   (A) CLOUDERA PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+   (B) CLOUDERA DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+       LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+   (C) CLOUDERA IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+       FROM OR RELATED TO THE CODE; AND
+   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, CLOUDERA IS NOT LIABLE FOR ANY
+       DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED
+       TO, DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR
+       UNAVAILABILITY, OR LOSS OR CORRUPTION OF DATA.
+-->
+
+
+<div #connectionConfigurationElementRef class="flow-designer-connection-configuration">
+    <div fxFill>
+        <form #connectionConfigurationForm="ngForm">
+            <div fxLayout="row"
+                 fxLayoutAlign="space-between center"
+                 class="pad-top-sm pad-bottom-md pad-left-md pad-right-md">
+                <div class="pad-top-sm ellipsis">
+                    <div class="pad-bottom-sm ellipsis">
+                        <mat-card-subtitle>
+                            {{getTitle()}}
+                        </mat-card-subtitle>
+                    </div>
+                    <mat-card-title>
+                        Configuration
+                    </mat-card-title>
+                </div>
+                <button mat-icon-button
+                        tabindex="-1"
+                        type="button"
+                        (click)="cancel()">
+                    <mat-icon>
+                        close
+                    </mat-icon>
+                </button>
+            </div>
+            <div class="sidenav-content">
+                <div class="connection-preview"
+                     class="pad-bottom-lg pad-left-md pad-right-md"
+                     fxLayoutAlign="start center">
+                    <div class="connection-source connection-node pad-left-sm pad-right-sm"
+                         fxLayoutAlign="start center">
+                        <div class="connection-node-icon push-left-sm push-right-sm">
+                            <a *ngIf="sourceEntity.type === 'processor'"
+                               class="fa fa-microchip"></a>
+                            <a *ngIf="sourceEntity.type === 'funnel'"
+                               class="fa fa-compress"></a>
+                            <a *ngIf="sourceEntity.type === 'remote-process-group'"
+                               class="fa fa-cloud"></a>
+                        </div>
+                        <div class="connection-node-details push-right-sm">
+                            <div class="connection-node-label">
+                                SOURCE
+                            </div>
+                            <div class="connection-node-name ellipsis">
+                                {{getComponentName(sourceEntity)}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="connection-edge">
+                        <a class="fa fa-long-arrow-right"></a>
+                    </div>
+                    <div class="connection-destination connection-node pad-left-sm pad-right-sm"
+                         fxLayoutAlign="start center">
+                        <div class="connection-node-icon push-left-sm push-right-sm">
+                            <a *ngIf="destinationEntity.type === 'processor'"
+                               class="fa fa-microchip"></a>
+                            <a *ngIf="destinationEntity.type === 'funnel'"
+                               class="fa fa-compress"></a>
+                            <a *ngIf="destinationEntity.type === 'remote-process-group'"
+                               class="fa fa-cloud"></a>
+                        </div>
+                        <div class="connection-node-details push-right-sm">
+                            <div class="connection-node-label">
+                                DESTINATION
+                            </div>
+                            <div class="connection-node-name ellipsis">
+                                {{getComponentName(destinationEntity)}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pad-bottom-md pad-left-md pad-right-md"
+                     fxLayoutAlign="start center">
+                    <span class="sm-card-title">
+                        Settings
+                    </span>
+                </div>
+                <div class="pad-left-md pad-right-md">
+                    <flow-designer-connection-definition #connectionDefinitionComponent fxFill
+                                                         [connectionEntity]="connectionEntity"
+                                                         [sourceEntity]="sourceEntity"
+                                                         [destinationEntity]="destinationEntity"></flow-designer-connection-definition>
+                </div>
+                <div class="pad-bottom-sm pad-left-md pad-right-md">
+                    <mat-form-field floatLabel="always">
+                        <input matInput
+                               required
+                               name="flowFileExpiration"
+                               placeholder="FLOWFILE EXPIRATION"
+                               required
+                               [(ngModel)]="flowFileExpiration">
+                    </mat-form-field>
+                </div>
+                <div class="pad-bottom-sm pad-left-md pad-right-md"
+                     fxLayoutAlign="start center">
+                    <mat-form-field class="pad-right-md"
+                                    floatLabel="always">
+                        <input matInput
+                               type="number"
+                               required
+                               min="0"
+                               pattern="^\d*[0-9]\d*$"
+                               name="backPressureObjectThreshold"
+                               placeholder="BACK PRESSURE OBJECT THRESHOLD"
+                               [(ngModel)]="backPressureObjectThreshold">
+                    </mat-form-field>
+                    <mat-form-field floatLabel="always">
+                        <input matInput
+                               required
+                               name="backPressureDataSizeThreshold"
+                               placeholder="BACK PRESSURE SIZE THRESHOLD"
+                               [(ngModel)]="backPressureDataSizeThreshold">
+                    </mat-form-field>
+                </div>
+                <div class="pad-bottom-sm pad-left-md pad-right-md">
+                    <mat-form-field floatLabel="always">
+                        <input matInput
+                               name="name"
+                               placeholder="CONNECTION NAME"
+                               [(ngModel)]="name">
+                    </mat-form-field>
+                </div>
+                <div class="pad-top-lg pad-bottom-md pad-left-md pad-right-md">
+                    <span class="sm-card-title">
+                        About
+                    </span>
+                </div>
+                <div class="pad-bottom-md pad-left-md pad-right-md">
+                    <div class="field-header">
+                        CONNECTION ID
+                    </div>
+                    <div>
+                        {{connectionEntity.id}}
+                    </div>
+                </div>
+            </div>
+            <button class="sidenav-close-button"
+                    mat-raised-button
+                    (click)="update()"
+                    color="fds-primary"
+                    [disabled]="unchanged || connectionConfigurationForm.invalid">
+                Apply
+            </button>
+        </form>
+    </div>
+</div>

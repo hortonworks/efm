@@ -1,0 +1,88 @@
+/*
+ * (c) 2018-2019 Cloudera, Inc. All rights reserved.
+ *
+ *  This code is provided to you pursuant to your written agreement with Cloudera, which may be the terms of the
+ *  Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+ *  to distribute this code.  If you do not have a written agreement with Cloudera or with an authorized and
+ *  properly licensed third party, you do not have any rights to this code.
+ *
+ *  If this code is provided to you under the terms of the AGPLv3:
+ *   (A) CLOUDERA PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+ *   (B) CLOUDERA DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+ *       LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+ *   (C) CLOUDERA IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+ *       FROM OR RELATED TO THE CODE; AND
+ *   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, CLOUDERA IS NOT LIABLE FOR ANY
+ *       DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED
+ *       TO, DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR
+ *       UNAVAILABILITY, OR LOSS OR CORRUPTION OF DATA.
+ */
+
+@import '../../../../../../node_modules/@nifi-fds/core/common/styles/globalVars';
+
+@mixin nfeditor-theme($theme) {
+  $primaryColor: map-get(map-get($theme, primary), 500);
+  $primaryColorHover: map-get(map-get($theme, primary), 100);
+  $accentColor: map-get(map-get($theme, accent), 500);
+  $accentColorHover: map-get(map-get($theme, accent), 100);
+
+  /*
+      CodeMirror styles
+  */
+
+  .nfel-editor .CodeMirror {
+    height: 100px;
+    border: 1px solid $grey8;
+    font-family: monospace;
+    background-color: #fff;
+    cursor: default;
+    line-height: normal;
+    min-width: 210px;
+  }
+
+  .nfel-editor .CodeMirror-scroll {
+    overflow-x: auto;
+    overflow-y: auto;
+  }
+
+  .nfel-editor .ui-resizable-se {
+    width: 16px;
+    height: 16px;
+    background-image: url(../platform/flow-designer/images/iconResize.png);
+    background-color: #fff;
+    z-index: 6;
+  }
+
+  /*
+      Override some defaults...
+  */
+
+  .CodeMirror-hints {
+    font-size: 13px !important;
+    z-index: 100001 !important;
+  }
+
+  .cm-s-default {
+    font-size: 13px;
+    font-family: monospace;
+  }
+
+  .cm-s-default .CodeMirror-matchingbracket {
+    color: #000 !important;
+    background-color: $grey3;
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+  }
+
+  /*
+      Override some defaults for this instance...
+  */
+
+  .nfel-editor .CodeMirror-vscrollbar {
+    bottom: 18px !important;
+  }
+
+  .nfel-editor .CodeMirror-hscrollbar {
+    right: 18px !important;
+  }
+}

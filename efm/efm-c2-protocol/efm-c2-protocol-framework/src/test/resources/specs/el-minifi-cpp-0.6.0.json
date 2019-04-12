@@ -1,0 +1,114 @@
+{
+  "operations" : {
+    "isNull": {
+      "name": "isNull",
+      "description": "The isNull function returns true if the subject is null, false otherwise. This is typically used to determine if an attribute exists.",
+      "args": {},
+      "subject": "Any",
+      "returnType": "Boolean"
+    },
+    "notNull": {
+      "name": "notNull",
+      "description": "The notNull function returns the opposite value of the isNull function. That is, it will return true if the subject exists and false otherwise.",
+      "args": {},
+      "subject": "Any",
+      "returnType": "Boolean"
+    },
+    "isEmpty": {
+      "name": "isEmpty",
+      "description": "The isEmpty function returns true if the Subject is null, does not contain any characters or contains only white-space (new line, carriage return, space, tab), false otherwise.",
+      "args": {},
+      "subject": "String",
+      "returnType": "Boolean"
+    },
+    "equals": {
+      "name": "equals",
+      "description": "The equals function is very widely used and determines if its subject is equal to another String value. Note that the equals function performs a direct comparison of two String values. Take care not to confuse this function with the matches function, which evaluates its subject against a Regular Expression.",
+      "args": {
+        "value": "The value to compare the Subject to. Must be same type as the Subject."
+      },
+      "subject": "Any",
+      "returnType": "Boolean"
+    },
+    "equalsIgnoreCase": {
+      "name": "equalsIgnoreCase",
+      "description": "Similar to the equals function, the equalsIgnoreCase function compares its subject against a String value but returns true if the two values differ only by case (upper case vs. lower case).",
+      "args": {
+        "value": "The value to compare the Subject to."
+      },
+      "subject": "String",
+      "returnType": "Boolean"
+    },
+    "gt": {
+      "name": "gt",
+      "description": "The gt function is used for numeric comparison and returns true if the subject is Greater Than its argument. If either the subject or the argument cannot be coerced into a Number, this function returns false.",
+      "args": {
+        "value": "The number to compare the Subject to."
+      },
+      "subject": "Number",
+      "returnType": "Boolean"
+    },
+    "ge": {
+      "name": "ge",
+      "description": "The ge function is used for numeric comparison and returns true if the subject is Greater Than Or Equal To its argument. If either the subject or the argument cannot be coerced into a Number, this function returns false.",
+      "args": {
+        "value": "The number to compare the Subject to."
+      },
+      "subject": "Number",
+      "returnType": "Boolean"
+    },
+    "lt": {
+      "name": "lt",
+      "description": "The lt function is used for numeric comparison and returns true if the subject is Less Than its argument. If either the subject or the argument cannot be coerced into a Number, this function returns false.",
+      "args": {
+        "value": "The number to compare the Subject to."
+      },
+      "subject": "Number",
+      "returnType": "Boolean"
+    },
+    "le": {
+      "name": "le",
+      "description": "The le function is used for numeric comparison and returns true if the subject is Less Than Or Equal To its argument. If either the subject or the argument cannot be coerced into a Number, this function returns false.",
+      "args": {
+        "value": "The number to compare the Subject to."
+      },
+      "subject": "Number",
+      "returnType": "Boolean"
+    },
+    "and": {
+      "name": "and",
+      "description": "The and function takes as a single argument a Boolean value and returns true if both the Subject and the argument are true. If either the subject or the argument is false or cannot be coerced into a Boolean, the function returns false. Typically, this is used with an embedded Expression as the argument.",
+      "args": {
+        "condition": "The right-hand-side of the 'and' Expression"
+      },
+      "subject": "Boolean",
+      "returnType": "Boolean"
+    },
+    "or": {
+      "name": "or",
+      "description": "The or function takes as a single argument a Boolean value and returns true if either the Subject or the argument is true. If both the subject and the argument are false, the function returns false. If either the Subject or the argument cannot be coerced into a Boolean value, this function will return false.",
+      "args": {
+        "condition": "The right-hand-side of the 'and' Expression"
+      },
+      "subject": "Boolean",
+      "returnType": "Boolean"
+    },
+    "not": {
+      "name": "not",
+      "description": "The not function returns the negation of the Boolean value of the subject.",
+      "args": {},
+      "subject": "Boolean",
+      "returnType": "Boolean"
+    },
+    "ifElse": {
+      "name": "ifElse",
+      "description": "Evaluates the first argument if the Subject evaluates to true, or the second argument if the Subject evaluates to false.",
+      "args": {
+        "EvaluateIfTrue": "The value to return if the Subject is true",
+        "EvaluateIfFalse": "The value to return if the Subject is false"
+      },
+      "subject": "Boolean",
+      "returnType": "String"
+    }
+  }
+}

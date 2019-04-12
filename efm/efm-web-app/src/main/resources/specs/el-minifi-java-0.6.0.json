@@ -1,0 +1,694 @@
+{
+    "operations" : {
+        "isNull": {
+            "name": "isNull",
+            "description": "The isNull function returns true if the subject is null, false otherwise. This is typically used to determine if an attribute exists.",
+            "args": {},
+            "subject": "Any",
+            "returnType": "Boolean"
+        },
+        "notNull": {
+            "name": "notNull",
+            "description": "The notNull function returns the opposite value of the isNull function. That is, it will return true if the subject exists and false otherwise.",
+            "args": {},
+            "subject": "Any",
+            "returnType": "Boolean"
+        },
+        "isEmpty": {
+            "name": "isEmpty",
+            "description": "The isEmpty function returns true if the Subject is null, does not contain any characters or contains only white-space (new line, carriage return, space, tab), false otherwise.",
+            "args": {},
+            "subject": "String",
+            "returnType": "Boolean"
+        },
+        "equals": {
+            "name": "equals",
+            "description": "The equals function is very widely used and determines if its subject is equal to another String value. Note that the equals function performs a direct comparison of two String values. Take care not to confuse this function with the matches function, which evaluates its subject against a Regular Expression.",
+            "args": {
+                "value": "The value to compare the Subject to. Must be same type as the Subject."
+            },
+            "subject": "Any",
+            "returnType": "Boolean"
+        },
+        "equalsIgnoreCase": {
+            "name": "equalsIgnoreCase",
+            "description": "Similar to the equals function, the equalsIgnoreCase function compares its subject against a String value but returns true if the two values differ only by case (upper case vs. lower case).",
+            "args": {
+                "value": "The value to compare the Subject to."
+            },
+            "subject": "String",
+            "returnType": "Boolean"
+        },
+        "gt": {
+            "name": "gt",
+            "description": "The gt function is used for numeric comparison and returns true if the subject is Greater Than its argument. If either the subject or the argument cannot be coerced into a Number, this function returns false.",
+            "args": {
+                "value": "The number to compare the Subject to."
+            },
+            "subject": "Number",
+            "returnType": "Boolean"
+        },
+        "ge": {
+            "name": "ge",
+            "description": "The ge function is used for numeric comparison and returns true if the subject is Greater Than Or Equal To its argument. If either the subject or the argument cannot be coerced into a Number, this function returns false.",
+            "args": {
+                "value": "The number to compare the Subject to."
+            },
+            "subject": "Number",
+            "returnType": "Boolean"
+        },
+        "lt": {
+            "name": "lt",
+            "description": "The lt function is used for numeric comparison and returns true if the subject is Less Than its argument. If either the subject or the argument cannot be coerced into a Number, this function returns false.",
+            "args": {
+                "value": "The number to compare the Subject to."
+            },
+            "subject": "Number",
+            "returnType": "Boolean"
+        },
+        "le": {
+            "name": "le",
+            "description": "The le function is used for numeric comparison and returns true if the subject is Less Than Or Equal To its argument. If either the subject or the argument cannot be coerced into a Number, this function returns false.",
+            "args": {
+                "value": "The number to compare the Subject to."
+            },
+            "subject": "Number",
+            "returnType": "Boolean"
+        },
+        "and": {
+            "name": "and",
+            "description": "The and function takes as a single argument a Boolean value and returns true if both the Subject and the argument are true. If either the subject or the argument is false or cannot be coerced into a Boolean, the function returns false. Typically, this is used with an embedded Expression as the argument.",
+            "args": {
+                "condition": "The right-hand-side of the 'and' Expression"
+            },
+            "subject": "Boolean",
+            "returnType": "Boolean"
+        },
+        "or": {
+            "name": "or",
+            "description": "The or function takes as a single argument a Boolean value and returns true if either the Subject or the argument is true. If both the subject and the argument are false, the function returns false. If either the Subject or the argument cannot be coerced into a Boolean value, this function will return false.",
+            "args": {
+                "condition": "The right-hand-side of the 'and' Expression"
+            },
+            "subject": "Boolean",
+            "returnType": "Boolean"
+        },
+        "not": {
+            "name": "not",
+            "description": "The not function returns the negation of the Boolean value of the subject.",
+            "args": {},
+            "subject": "Boolean",
+            "returnType": "Boolean"
+        },
+        "ifElse": {
+            "name": "ifElse",
+            "description": "Evaluates the first argument if the Subject evaluates to true, or the second argument if the Subject evaluates to false.",
+            "args": {
+                "EvaluateIfTrue": "The value to return if the Subject is true",
+                "EvaluateIfFalse": "The value to return if the Subject is false"
+            },
+            "subject": "Boolean",
+            "returnType": "String"
+        },
+        "toUpper": {
+            "name": "toUpper",
+            "description": "This function converts the Subject into an all upper-case String. Said another way, it replaces any lowercase letter with the uppercase equivalent.",
+            "args": {},
+            "subject": "String",
+            "returnType": "String"
+        },
+        "toLower": {
+            "name": "toLower",
+            "description": "This function converts the Subject into an all lower-case String. Said another way, it replaces any uppercase letter with the lowercase equivalent.",
+            "args": {},
+            "subject": "String",
+            "returnType": "String"
+        },
+        "trim": {
+            "name": "trim",
+            "description": "The trim function will remove any leading or trailing white space from its subject.",
+            "args": {},
+            "subject": "String",
+            "returnType": "String"
+        },
+        "substring": {
+            "name": "substring",
+            "description": "Returns a portion of the Subject, given a starting index and an optional ending index. If the ending index is not supplied, it will return the portion of the Subject starting at the given 'start index' and ending at the end of the Subject value.The starting index and ending index are zero-based. That is, the first character is referenced by using the value 0, not 1.If either the starting index is or the ending index is not a number, this function call will result in an error.If the starting index is larger than the ending index, this function call will result in an error.If the starting index or the ending index is greater than the length of the Subject or has a value less than 0, this function call will result in an error.",
+            "args": {
+                "starting index": "The 0-based index of the first character to capture (inclusive)",
+                "ending index": "The 0-based index of the last character to capture (exclusive)"
+            },
+            "subject": "String",
+            "returnType": "String"
+        },
+        "substringBefore": {
+            "name": "substringBefore",
+            "description": "Returns a portion of the Subject, starting with the first character of the Subject and ending with the character immediately before the first occurrence of the argument. If the argument is not present in the Subject, the entire Subject will be returned.",
+            "args": {
+                "value": "The String to search for in the Subject"
+            },
+            "subject": "String",
+            "returnType": "String"
+        },
+        "substringBeforeLast": {
+            "name": "substringBeforeLast",
+            "description": "Returns a portion of the Subject, starting with the first character of the Subject and ending with the character immediately before the last occurrence of the argument. If the argument is not present in the Subject, the entire Subject will be returned.",
+            "args": {
+                "value": "The String to search for in the Subject"
+            },
+            "subject": "String",
+            "returnType": "String"
+        },
+        "substringAfter": {
+            "name": "substringAfter",
+            "description": "Returns a portion of the Subject, starting with the character immediately after the first occurrence of the argument and extending to the end of the Subject. If the argument is not present in the Subject, the entire Subject will be returned.",
+            "args": {
+                "value": "The String to search for in the Subject"
+            },
+            "subject": "String",
+            "returnType": "String"
+        },
+        "substringAfterLast": {
+            "name": "substringAfterLast",
+            "description": "Returns a portion of the Subject, starting with the character immediately after the last occurrence of the argument and extending to the end of the Subject. If the argument is not present in the Subject, the entire Subject will be returned.",
+            "args": {
+                "value": "The String to search for in the Subject"
+            },
+            "subject": "String",
+            "returnType": "String"
+        },
+        "getDelimitedField": {
+            "name": "getDelimitedField",
+            "description": "Parses the Subject as a delimited line of text and returns just a single field from that delimited text.",
+            "args": {
+                "index": "The index of the field to return. A value of 1 will return the first field, a value of 2 will return the second field, and so on.",
+                "delimiter": "Optional argument that provides the character to use as a field separator. If not specified, a comma will be used. This value must be exactly 1 character.",
+                "quoteChar": "Optional argument that provides the character that can be used to quote values so that the delimiter can be used within a single field. If not specified, a double-quote (\") will be used. This value must be exactly 1 character.",
+                "escapeChar": "Optional argument that provides the character that can be used to escape the Quote Character or the Delimiter within a field. If not specified, a backslash (\\) is used. This value must be exactly 1 character.",
+                "stripChars": "Optional argument that specifies whether or not quote characters and escape characters should be stripped. For example, if we have a field value \"1, 2, 3\" and this value is true, we will get the value 1, 2, 3, but if this value is false, we will get the value \"1, 2, 3\" with the quotes. The default value is false. This value must be either true or false."
+            },
+            "subject": "String",
+            "returnType": "String"
+        },
+        "append": {
+            "name": "append",
+            "description": "The append function returns the result of appending the argument to the value of the Subject. If the Subject is null, returns the argument itself.",
+            "args": {
+                "value": "The String to append to the end of the Subject"
+            },
+            "subject": "String",
+            "returnType": "String"
+        },
+        "prepend": {
+            "name": "prepend",
+            "description": "The prepend function returns the result of prepending the argument to the value of the Subject. If the subject is null, returns the argument itself.",
+            "args": {
+                "value": "The String to prepend to the beginning of the Subject"
+            },
+            "subject": "String",
+            "returnType": "String"
+        },
+        "replace": {
+            "name": "replace",
+            "description": "Replaces all occurrences of one literal String within the Subject with another String.",
+            "args": {
+                "Search String": "The String to find within the Subject",
+                "Replacement": "The value to replace Search String with"
+            },
+            "subject": "String",
+            "returnType": "String"
+        },
+        "replaceFirst": {
+            "name": "replaceFirst",
+            "description": "Replaces the first occurrence of one literal String or regular expression within the Subject with another String.",
+            "args": {
+                "Search String": "The String (literal or regular expression pattern) to find within the Subject",
+                "Replacement": "The value to replace Search String with"
+            },
+            "subject": "String",
+            "returnType": "String"
+        },
+        "replaceAll": {
+            "name": "replaceAll",
+            "description": "The replaceAll function takes two String arguments: a literal String or Regular Expression (NiFi uses the Java Pattern syntax), and a replacement string. The return value is the result of substituting the replacement string for all patterns within the Subject that match the Regular Expression.",
+            "args": {
+                "Regex": "he Regular Expression (in Java syntax) to match in the Subject",
+                "Replacement": "The value to use for replacing matches in the Subject. If the regular expression argument uses Capturing Groups, back references are allowed in the replacement."
+            },
+            "subject": "String",
+            "returnType": "String"
+        },
+        "replaceNull": {
+            "name": "replaceNull",
+            "description": "The replaceNull function returns the argument if the Subject is null. Otherwise, returns the Subject.",
+            "args": {
+                "Replacement": "The value to return if the Subject is null."
+            },
+            "subject": "Any",
+            "returnType": "Type of Subject if Subject is not null; else, type of Argument"
+        },
+        "replaceEmpty": {
+            "name": "replaceEmpty",
+            "description": "The replaceEmpty function returns the argument if the Subject is null or if the Subject consists only of white space (new line, carriage return, tab, space). Otherwise, returns the Subject.",
+            "args": {
+                "Replacement": "The value to return if the Subject is null or empty."
+            },
+            "subject": "String",
+            "returnType": "String"
+        },
+        "length": {
+            "name": "length",
+            "description": "Returns the length of the Subject",
+            "args": {},
+            "subject": "String",
+            "returnType": "Number"
+        },
+        "escapeJson": {
+            "name": "escapeJson",
+            "description": "This function prepares the Subject to be inserted into JSON document by escaping the characters in the String using Json String rules. The function correctly escapes quotes and control-chars (tab, backslash, cr, ff, etc.)",
+            "args": {},
+            "subject": "String",
+            "returnType": "String"
+        },
+        "escapeXml": {
+            "name": "escapeXml",
+            "description": "This function prepares the Subject to be inserted into XML document by escaping the characters in a String using XML entities. The function correctly escapes quotes, apostrophe, ampersand, <, > and control-chars.",
+            "args": {},
+            "subject": "String",
+            "returnType": "String"
+        },
+        "escapeCsv": {
+            "name": "escapeCsv",
+            "description": "This function prepares the Subject to be inserted into CSV document by escaping the characters in a String using the rules in RFC 4180. The function correctly escapes quotes and surround the string in quotes if needed.",
+            "args": {},
+            "subject": "String",
+            "returnType": "String"
+        },
+        "escapeHtml3": {
+            "name": "escapeHtml3",
+            "description": "This function prepares the Subject to be inserted into HTML document by escaping the characters in a String using the HTML entities. Supports only the HTML 3.0 entities.",
+            "args": {},
+            "subject": "String",
+            "returnType": "String"
+        },
+        "escapeHtml4": {
+            "name": "escapeHtml4",
+            "description": "This function prepares the Subject to be inserted into HTML document by escaping the characters in a String using the HTML entities. Supports all known HTML 4.0 entities.",
+            "args": {},
+            "subject": "String",
+            "returnType": "String"
+        },
+        "unescapeJson": {
+            "name": "unescapeJson",
+            "description": "This function unescapes any Json literals found in the String.",
+            "args": {},
+            "subject": "String",
+            "returnType": "String"
+        },
+        "unescapeXml": {
+            "name": "unescapeXml",
+            "description": "This function unescapes a string containing XML entity escapes to a string containing the actual Unicode characters corresponding to the escapes. Supports only the five basic XML entities (gt, lt, quot, amp, apos).",
+            "args": {},
+            "subject": "String",
+            "returnType": "String"
+        },
+        "unescapeCsv": {
+            "name": "unescapeCsv",
+            "description": "This function unescapes a String from a CSV document according to the rules of RFC 4180.",
+            "args": {},
+            "subject": "String",
+            "returnType": "String"
+        },
+        "unescapeHtml3": {
+            "name": "unescapeHtml3",
+            "description": "This function unescapes a string containing HTML 3 entity to a string containing the actual Unicode characters corresponding to the escapes. Supports only HTML 3.0 entities.",
+            "args": {},
+            "subject": "String",
+            "returnType": "String"
+        },
+        "unescapeHtml4": {
+            "name": "unescapeHtml4",
+            "description": "This function unescapes a string containing HTML 4 entity to a string containing the actual Unicode characters corresponding to the escapes. Supports all known HTML 4.0 entities.",
+            "args": {},
+            "subject": "String",
+            "returnType": "String"
+        },
+        "urlEncode": {
+            "name": "urlEncode",
+            "description": "Returns a URL-friendly version of the Subject. This is useful, for instance, when using an attribute value to indicate the URL of a website.",
+            "args": {},
+            "subject": "String",
+            "returnType": "String"
+        },
+        "urlDecode": {
+            "name": "urlDecode",
+            "description": "Converts a URL-friendly version of the Subject into a human-readable form.",
+            "args": {},
+            "subject": "String",
+            "returnType": "String"
+        },
+        "base64Encode": {
+            "name": "base64Encode",
+            "description": "Returns a Base64 encoded string. This is useful for being able to transfer binary data as ascii.",
+            "args": {},
+            "subject": "String",
+            "returnType": "String"
+        },
+        "base64Decode": {
+            "name": "base64Decode",
+            "description": "Reverses the Base64 encoding on given string.",
+            "args": {},
+            "subject": "String",
+            "returnType": "String"
+        },
+        "startsWith": {
+            "name": "startsWith",
+            "description": "Returns true if the Subject starts with the String provided as the argument, false otherwise.",
+            "args": {
+                "value": "The value to search for"
+            },
+            "subject": "String",
+            "returnType": "Boolean"
+        },
+        "endsWith": {
+            "name": "endsWith",
+            "description": "Returns true if the Subject ends with the String provided as the argument, false otherwise.",
+            "args": {
+                "value": "The value to search for"
+            },
+            "subject": "String",
+            "returnType": "Boolean"
+        },
+        "contains": {
+            "name": "contains",
+            "description": "Returns true if the Subject contains the value of the argument anywhere in the value.",
+            "args": {
+                "value": "The value to search for"
+            },
+            "subject": "String",
+            "returnType": "Boolean"
+        },
+        "in": {
+            "name": "in",
+            "description": "Returns true if the Subject is matching one of the provided arguments.",
+            "args": {
+                "value1": "First possible matching value",
+                "valueN": "Nth possible matching value"
+            },
+            "subject": "String",
+            "returnType": "Boolean"
+        },
+        "find": {
+            "name": "find",
+            "description": "Returns true if the Subject contains any sequence of characters that matches the Regular Expression provided by the argument.",
+            "args": {
+                "Regex": "The Regular Expression (in the Java Pattern syntax) to match against the Subject"
+            },
+            "subject": "String",
+            "returnType": "Boolean"
+        },
+        "matches": {
+            "name": "matches",
+            "description": "Returns true if the Subject exactly matches the Regular Expression provided by the argument.",
+            "args": {
+                "Regex": "The Regular Expression (in the Java Pattern syntax) to match against the Subject"
+            },
+            "subject": "String",
+            "returnType": "Boolean"
+        },
+        "indexOf": {
+            "name": "indexOf",
+            "description": "Returns the index of the first character in the Subject that matches the String value provided as an argument. If the argument is found multiple times within the Subject, the value returned is the starting index of the first occurrence. If the argument cannot be found in the Subject, returns -1. The index is zero-based. This means that if the search string is found at the beginning of the Subject, the value returned will be 0, not 1.",
+            "args": {
+                "value": "The value to search for in the Subject"
+            },
+            "subject": "String",
+            "returnType": "Number"
+        },
+        "lastIndexOf": {
+            "name": "lastIndexOf",
+            "description": "Returns the index of the first character in the Subject that matches the String value provided as an argument. If the argument is found multiple times within the Subject, the value returned is the starting index of the last occurrence. If the argument cannot be found in the Subject, returns -1. The index is zero-based. This means that if the search string is found at the beginning of the Subject, the value returned will be 0, not 1.",
+            "args": {
+                "value": "The value to search for in the Subject"
+            },
+            "subject": "String",
+            "returnType": "Number"
+        },
+        "jsonPath": {
+            "name": "jsonPath",
+            "description": "The jsonPath function generates a string by evaluating the Subject as JSON and applying a JSON path expression. An empty string is generated if the Subject does not contain valid JSON, the jsonPath is invalid, or the path does not exist in the Subject. If the evaluation results in a scalar value, the string representation of scalar value is generated. Otherwise a string representation of the JSON result is generated. A JSON array of length 1 is special cased when [0] is a scalar, the string representation of [0] is generated.1",
+            "args": {
+                "jsonPath": "the JSON path expression used to evaluate the Subject."
+            },
+            "subject": "String",
+            "returnType": "String"
+        },
+        "plus": {
+            "name": "plus",
+            "description": "Adds a numeric value to the Subject. If either the argument or the Subject cannot be coerced into a Number, returns null.",
+            "args": {
+                "Operand": "The value to add to the Subject"
+            },
+            "subject": "Number or Decimal",
+            "returnType": "Number or Decimal (depending on input types)"
+        },
+        "minus": {
+            "name": "minus",
+            "description": "Subtracts a numeric value from the Subject.",
+            "args": {
+                "Operand": "The value to subtract from the Subject"
+            },
+            "subject": "Number or Decimal",
+            "returnType": "Number or Decimal (depending on input types)"
+        },
+        "multiply": {
+            "name": "multiply",
+            "description": "Multiplies a numeric value by the Subject and returns the product.",
+            "args": {
+                "Operand": "The value to multiple the Subject by"
+            },
+            "subject": "Number or Decimal",
+            "returnType": "Number or Decimal (depending on input types)"
+        },
+        "divide": {
+            "name": "divide",
+            "description": "Divides the Subject by a numeric value and returns the result.",
+            "args": {
+                "Operand": "The value to divide the Subject by"
+            },
+            "subject": "Number or Decimal",
+            "returnType": "Number or Decimal (depending on input types)"
+        },
+        "mod": {
+            "name": "mod",
+            "description": "Performs a modular division of the Subject by the argument. That is, this function will divide the Subject by the value of the argument and return not the quotient but rather the remainder.",
+            "args": {
+                "Operand": "The value to divide the Subject by"
+            },
+            "subject": "Number or Decimal",
+            "returnType": "Number or Decimal (depending on input types)"
+        },
+        "toRadix": {
+            "name": "toRadix",
+            "description": "Converts the Subject from a Base 10 number to a different Radix (or number base). An optional second argument can be used to indicate the minimum number of characters to be used. If the converted value has fewer than this number of characters, the number will be padded with leading zeroes. If a decimal is passed as the subject, it will first be converted to a whole number and then processed.",
+            "args": {
+                "Desired Base": "A Number between 2 and 36 (inclusive)",
+                "Padding": "Optional argument that specifies the minimum number of characters in the converted output"
+            },
+            "subject": "Number",
+            "returnType": "String"
+        },
+        "fromRadix": {
+            "name": "fromRadix",
+            "description": "Converts the Subject from a specified Radix (or number base) to a base ten whole number. The subject will converted as is, without interpretation, and all characters must be valid for the base being converted from. For example converting \"0xFF\" from hex will not work due to \"x\" being a invalid hex character. If a decimal is passed as the subject, it will first be converted to a whole number and then processed.",
+            "args": {
+                "Subject Base": "A Number between 2 and 36 (inclusive)"
+            },
+            "subject": "String",
+            "returnType": "Number"
+        },
+        "random": {
+            "name": "random",
+            "description": "Returns a random whole number ( 0 to 2^63 - 1) using an insecure random number generator.",
+            "args": {},
+            "subject": "None",
+            "returnType": "Number"
+        },
+        "math": {
+            "name": "math",
+            "description": "ADVANCED FEATURE. This expression is designed to be used by advanced users only. It utilizes Java Reflection to run arbitrary java.lang.Math static methods. The exact API will depend on the version of Java you are running. The Java 8 API can be found here: https://docs.oracle.com/javase/8/docs/api/java/lang/Math.html In order to run the correct method, the parameter types must be correct. The Expression Language \"Number\" (whole number) type is interpreted as a Java \"long\". The \"Decimal\" type is interpreted as a Java \"double\". Running the desired method may require calling \"toNumber()\" or \"toDecimal()\" in order to \"cast\" the value to the desired type. This also is important to remember when cascading \"math()\" calls since the return type depends on the method that was run.",
+            "args": {
+                "Method": "The name of the Java Math method to run",
+                "Optional Argument": "Optional argument that acts as the second parameter to the method."
+            },
+            "subject": "Subjectless, Number or Decimal (depending on the desired method to run)",
+            "returnType": "Number or Decimal (depending on method run)"
+        },
+        "format": {
+            "name": "format",
+            "description": "Formats a number as a date/time according to the format specified by the argument. The argument must be a String that is a valid Java SimpleDateFormat format. The Subject is expected to be a Number that represents the number of milliseconds since Midnight GMT on January 1, 1970. The number will be evaluated using the local time zone unless specified in the second optional argument.",
+            "args": {
+                "format": "The format to use in the Java SimpleDateFormat syntax",
+                "time zone": "Optional argument that specifies the time zone to use (in the Java TimeZone syntax)"
+            },
+            "subject": "Number",
+            "returnType": "String"
+        },
+        "toDate": {
+            "name": "toDate",
+            "description": "Converts a String into a Date data type, based on the format specified by the argument. The argument must be a String that is a valid Java SimpleDateFormat syntax. The Subject is expected to be a String that is formatted according the argument. The date will be evaluated using the local time zone unless specified in the second optional argument.",
+            "args": {
+                "format": "The current format to use when parsing the Subject, in the Java SimpleDateFormat syntax.",
+                "time zone": "Optional argument that specifies the time zone to use when parsing the Subject, in the Java TimeZone syntax."
+            },
+            "subject": "String",
+            "returnType": "Date"
+        },
+        "now": {
+            "name": "now",
+            "description": "Returns the current date and time as a Date data type object.",
+            "args": {},
+            "subject": "None",
+            "returnType": "Date"
+        },
+        "toString": {
+            "name": "toString",
+            "description": "Coerces the Subject into a String",
+            "args": {},
+            "subject": "Any type",
+            "returnType": "String"
+        },
+        "toNumber": {
+            "name": "toNumber",
+            "description": "Coerces the Subject into a Number",
+            "args": {},
+            "subject": "String, Decimal, or Date",
+            "returnType": "Number"
+        },
+        "toDecimal": {
+            "name": "toDecimal",
+            "description": "Coerces the Subject into a Decimal",
+            "args": {},
+            "subject": "String, Whole Number or Date",
+            "returnType": "Decimal"
+        },
+        "ip": {
+            "name": "ip",
+            "description": "Returns the IP address of the machine.",
+            "args": {},
+            "subject": "None",
+            "returnType": "String"
+        },
+        "hostname": {
+            "name": "hostname",
+            "description": "Returns the Hostname of the machine. An optional argument of type Boolean can be provided to specify whether or not the Fully Qualified Domain Name should be used. If false, or not specified, the hostname will not be fully qualified. If the argument is true but the fully qualified hostname cannot be resolved, the simple hostname will be returned.",
+            "args": {
+                "Fully Qualified": "Optional parameter that specifies whether or not the hostname should be fully qualified. If not specified, defaults to false."
+            },
+            "subject": "None",
+            "returnType": "String"
+        },
+        "UUID": {
+            "name": "UUID",
+            "description": "Returns a randomly generated UUID.",
+            "args": {},
+            "subject": "None",
+            "returnType": "String"
+        },
+        "nextInt": {
+            "name": "nextInt",
+            "description": "Returns a one-up value (starting at 0) and increasing over the lifetime of the running instance of NiFi. This value is not persisted across restarts and is not guaranteed to be unique across a cluster. This value is considered \"one-up\" in that if called multiple times across the NiFi instance, the values will be sequential. However, this counter is shared across all NiFi components, so calling this function multiple times from one Processor will not guarantee sequential values within the context of a particular Processor.",
+            "args": {},
+            "subject": "None",
+            "returnType": "Number"
+        },
+        "literal": {
+            "name": "literal",
+            "description": "Returns its argument as a literal String value. This is useful in order to treat a string or a number at the beginning of an Expression as an actual value, rather than treating it as an attribute name. Additionally, it can be used when the argument is an embedded Expression that we would then like to evaluate additional functions against.",
+            "args": {
+                "value": "The value to be treated as a literal string, number, or boolean value."
+            },
+            "subject": "None",
+            "returnType": "String"
+        },
+        "getStateValue": {
+            "name": "getStateValue",
+            "description": "Access a processor’s state values by passing in the String key and getting the value back as a String. This is a special Expression Language function that only works with processors that explicitly allow EL to query state. Currently only UpdateAttribute does.",
+            "args": {},
+            "subject": "None",
+            "returnType": "String"
+        },
+        "anyAttribute": {
+            "name": "anyAttribute",
+            "description": "Checks to see if any of the given attributes, match the given condition. This function has no subject and takes one or more arguments that are the names of attributes to which the remainder of the Expression is to be applied. If any of the attributes specified, when evaluated against the rest of the Expression, returns a value of true, then this function will return true. Otherwise, this function will return false.",
+            "args": {
+                "Attribute Names": "One or more attribute names to evaluate"
+            },
+            "subject": "None",
+            "returnType": "Boolean"
+        },
+        "allAttributes": {
+            "name": "allAttributes",
+            "description": "Checks to see if all of the given attributes match the given condition. This function has no subject and takes one or more arguments that are the names of attributes to which the remainder of the Expression is to be applied. If all of the attributes specified, when evaluated against the rest of the Expression, returns a value of true, then this function will return true. Otherwise, this function will return false.",
+            "args": {
+                "Attribute Names": "One or more attribute names to evaluate"
+            },
+            "subject": "None",
+            "returnType": "Boolean"
+        },
+        "anyMatchingAttribute": {
+            "name": "anyMatchingAttribute",
+            "description": "Checks to see if any of the given attributes, match the given condition. This function has no subject and takes one or more arguments that are Regular Expressions to match against attribute names. Any attribute whose name matches one of the supplied Regular Expressions will be evaluated against the rest of the Expression. If any of the attributes specified, when evaluated against the rest of the Expression, returns a value of true, then this function will return true. Otherwise, this function will return false.",
+            "args": {
+                "Regex": "One or more Regular Expressions (in the Java Pattern syntax) to evaluate against attribute names"
+            },
+            "subject": "None",
+            "returnType": "Boolean"
+        },
+        "allMatchingAttributes": {
+            "name": "allMatchingAttributes",
+            "description": "Checks to see if any of the given attributes, match the given condition. This function has no subject and takes one or more arguments that are Regular Expressions to match against attribute names. Any attribute whose name matches one of the supplied Regular Expressions will be evaluated against the rest of the Expression. If all of the attributes specified, when evaluated against the rest of the Expression, return a value of true, then this function will return true. Otherwise, this function will return false.",
+            "args": {
+                "Regex": "One or more Regular Expressions (in the Java Pattern syntax) to evaluate against attribute names"
+            },
+            "subject": "None",
+            "returnType": "Boolean"
+        },
+        "anyDelineatedValue": {
+            "name": "anyDelineatedValue",
+            "description": "Splits a String apart according to a delimiter that is provided, and then evaluates each of the values against the rest of the Expression. If the Expression, when evaluated against any of the individual values, returns true, this function returns true. Otherwise, the function returns false.",
+            "args": {
+                "Delineated Value": "The value that is delineated. This is generally an embedded Expression, though it does not have to be.",
+                "Delimiter": "The value to use to split apart the delineatedValue argument."
+            },
+            "subject": "None",
+            "returnType": "Boolean"
+        },
+        "allDelineatedValues": {
+            "name": "allDelineatedValues",
+            "description": "Splits a String apart according to a delimiter that is provided, and then evaluates each of the values against the rest of the Expression. If the Expression, when evaluated against all of the individual values, returns true in each case, then this function returns true. Otherwise, the function returns false.",
+            "args": {
+                "Delineated Value": "The value that is delineated. This is generally an embedded Expression, though it does not have to be.",
+                "Delimiter": "The value to use to split apart the delineatedValue argument."
+            },
+            "subject": "None",
+            "returnType": "Boolean"
+        },
+        "join": {
+            "name": "join",
+            "description": "Aggregate function that concatenates multiple values with the specified delimiter. This function may be used only in conjunction with the allAttributes, allMatchingAttributes, and allDelineatedValues functions.",
+            "args": {
+                "Delimiter": "The String delimiter to use when joining values"
+            },
+            "subject": "String",
+            "returnType": "String"
+        },
+        "count": {
+            "name": "count",
+            "description": "Aggregate function that counts the number of non-null, non-false values returned by the allAttributes, allMatchingAttributes, and allDelineatedValues. This function may be used only in conjunction with the allAttributes, allMatchingAttributes, and allDelineatedValues functions.",
+            "args": {},
+            "subject": "Any",
+            "returnType": "Number"
+        }
+    }
+}

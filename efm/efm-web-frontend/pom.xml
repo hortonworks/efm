@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ~  Copyright (c) 2018-2019 Cloudera, Inc. All rights reserved.
+ ~
+ ~  This code is provided to you pursuant to your written agreement with Cloudera, which may be the terms of the
+ ~  Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+ ~  to distribute this code.  If you do not have a written agreement with Cloudera or with an authorized and
+ ~  properly licensed third party, you do not have any rights to this code.
+ ~
+ ~  If this code is provided to you under the terms of the AGPLv3:
+ ~   (A) CLOUDERA PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+ ~   (B) CLOUDERA DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+ ~       LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+ ~   (C) CLOUDERA IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+ ~       FROM OR RELATED TO THE CODE; AND
+ ~   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, CLOUDERA IS NOT LIABLE FOR ANY
+ ~       DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED
+ ~       TO, DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR
+ ~       UNAVAILABILITY, OR LOSS OR CORRUPTION OF DATA.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.cloudera.cem.efm</groupId>
+        <artifactId>efm</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>efm-web-frontend</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <efm.filter>efm-min.properties</efm.filter>
+        <frontend.source>${basedir}/src/main</frontend.source>
+        <frontend.dependency.configs>${basedir}/src/main</frontend.dependency.configs>
+        <frontend.working.dir>${project.build.directory}/frontend-working-directory</frontend.working.dir>
+        <frontend.assets>${project.build.directory}/${project.build.finalName}/node_modules</frontend.assets>
+    </properties>
+
+    <build>
+        <filters>
+            <filter>src/main/resources/filters/${efm.filter}</filter>
+        </filters>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <!--
+                        Copy build and test configs into frontend working directory.
+                    -->
+                    <execution>
+                        <id>copy-client-side-build-and-test-configs</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${frontend.working.dir}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${frontend.dependency.configs}</directory>
+                                    <filtering>true</filtering>
+                                    <excludes>
+                                        <!-- These files are only needed for the local development mode frontend build -->
+                                        <exclude>index.html</exclude>
+                                        <exclude>node_modules/</exclude>
+                                        <exclude>platform/flow-designer/css/</exclude>
+                                        <exclude>webapp/css/</exclude>
+                                        <exclude>efm.bundle.*</exclude>
+                                    </excludes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <!--
+                        Copy src into frontend working directory.
+                    -->
+                    <execution>
+                        <id>copy-source</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${frontend.working.dir}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${frontend.source}</directory>
+                                    <filtering>true</filtering>
+                                    <includes>
+                                        <include>locale/**/*</include>
+                                        <include>webapp/**/*</include>
+                                        <include>platform/**/*</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <!--
+                        Stage client side node_modules dependencies for inclusion in .war.
+                    -->
+                    <execution>
+                        <id>copy-client-side-deps</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${frontend.assets}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${frontend.working.dir}/node_modules</directory>
+                                    <filtering>false</filtering>
+                                    <includes>
+                                        <!-- roboto -->
+                                        <include>roboto-fontface/fonts/roboto-slab/Roboto-Slab-Regular.ttf</include>
+                                        <include>roboto-fontface/fonts/roboto/Roboto-Regular.ttf</include>
+                                        <include>roboto-fontface/fonts/roboto/Roboto-RegularItalic.ttf</include>
+                                        <include>roboto-fontface/fonts/roboto/Roboto-Medium.ttf</include>
+                                        <include>roboto-fontface/fonts/roboto/Roboto-Light.ttf</include>
+                                        <include>roboto-fontface/fonts/roboto/Roboto-Bold.ttf</include>
+                                        <include>roboto-fontface/LICENSE*</include>
+                                        <!-- covalent -->
+                                        <include>@covalent/core/common/platform.css</include>
+                                        <include>@covalent/core/common/styles/font/MaterialIcons-Regular.woff2</include>
+                                        <include>@covalent/core/common/styles/font/MaterialIcons-Regular.ttf</include>
+                                        <include>@covalent/core/README.md</include>
+                                        <!-- jqueryUI -->
+                                        <include>jquery-ui-dist/jquery-ui.min.css</include>
+                                        <!-- qtip2 -->
+                                        <include>qtip2/dist/jquery.qtip.min.css</include>
+                                        <!-- SlickGrid -->
+                                        <include>slickgrid/slick.grid.css</include>
+                                        <!-- reset -->
+                                        <include>reset.css/reset.css</include>
+                                        <!-- FDS -->
+                                        <include>@nifi-fds/core/common/styles/css/*</include>
+                                        <include>@nifi-fds/core/LICENSE</include>
+                                        <include>@nifi-fds/core/NOTICE</include>
+                                        <include>@nifi-fds/core/README.md</include>
+                                        <!-- font-awesome -->
+                                        <include>font-awesome/css/font-awesome.css</include>
+                                        <include>font-awesome/fonts/fontawesome-webfont.woff2</include>
+                                        <include>font-awesome/fonts/fontawesome-webfont.ttf</include>
+                                        <include>font-awesome/README.md</include>
+                                        <!-- systemjs -->
+                                        <include>systemjs/dist/system.src.js*</include>
+                                        <include>systemjs/LICENSE</include>
+                                        <include>systemjs/README.md</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <!--
+                        Stage client side styles.
+                    -->
+                    <execution>
+                        <id>copy-webapp-client-side-styles</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/${project.build.finalName}/css</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${frontend.working.dir}/webapp/css</directory>
+                                    <filtering>false</filtering>
+                                    <includes>
+                                        <include>*</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <!--
+                        Stage the final bundle of UI resources to be included
+                    -->
+                    <execution>
+                        <id>copy-web-ui-bundle</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/${project.build.finalName}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${frontend.working.dir}/webapp</directory>
+                                    <filtering>false</filtering>
+                                    <includes>
+                                        <include>images/*</include>
+                                        <include>efm.bundle.*</include>
+                                        <include>index.html</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <!--
+                        Stage the flow-designer platform styles
+                    -->
+                    <execution>
+                        <id>copy-flow-designer-platform-styles</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/${project.build.finalName}/platform/flow-designer</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${frontend.working.dir}/platform/flow-designer</directory>
+                                    <filtering>false</filtering>
+                                    <includes>
+                                        <include>**/*.css</include>
+                                        <include>images/**.png</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <!--
+                        Stage the localization files to be included
+                    -->
+                    <execution>
+                        <id>copy-localization</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/${project.build.finalName}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${frontend.working.dir}/locale</directory>
+                                    <filtering>false</filtering>
+                                    <includes>
+                                        <include>*</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.5</version>
+                <configuration>
+                    <installDirectory>${frontend.working.dir}</installDirectory>
+                </configuration>
+                <executions>
+                    <!--
+                        Install node and npm.
+                    -->
+                    <execution>
+                        <id>install-node-and-npm</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                        <configuration>
+                            <nodeVersion>v8.10.0</nodeVersion>
+                        </configuration>
+                    </execution>
+                    <!--
+                        Install node_modules (build, test, AND client side dependencies).
+                    -->
+                    <execution>
+                        <id>npm-install</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                        <configuration>
+                            <arguments>--silent --cache-min Infinity install</arguments>
+                            <workingDirectory>${frontend.working.dir}</workingDirectory>
+                        </configuration>
+                    </execution>
+                    <!--
+                        Compile Flow Designer SASS into css and gzip compress it.
+                    -->
+                    <execution>
+                        <id>grunt-compile-flow-designer-sass</id>
+                        <goals>
+                            <goal>grunt</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <arguments>compile-flow-designer-styles</arguments>
+                            <workingDirectory>${frontend.working.dir}</workingDirectory>
+                        </configuration>
+                    </execution>
+                    <!--
+                        Compile EFM web ui SASS into css and gzip compress it.
+                    -->
+                    <execution>
+                        <id>grunt-compile-web-ui-sass</id>
+                        <goals>
+                            <goal>grunt</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <arguments>compile-web-ui-styles</arguments>
+                            <workingDirectory>${frontend.working.dir}</workingDirectory>
+                        </configuration>
+                    </execution>
+                    <!--
+                        Bundle, minify, and gzip compress all the javascript.
+                    -->
+                    <execution>
+                        <id>grunt-package-web-ui</id>
+                        <goals>
+                            <goal>grunt</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <arguments>bundle-web-ui</arguments>
+                            <workingDirectory>${frontend.working.dir}</workingDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.8</version>
+                <executions>
+                    <execution>
+                        <id>add-ui-to-jar</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <sequential>
+                                    <echo>Copy EFM UI</echo>
+                                    <copy todir="${project.build.directory}/classes/static/ui">
+                                        <fileset dir="${project.build.directory}/${project.build.finalName}">
+                                            <include name="**/*"/>
+                                        </fileset>
+                                    </copy>
+                                </sequential>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--
+                By default, skip all tests in c2-web-frontend directory during build.
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>jsUnitTests</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <!--
+                        Selenium, Karma/Jasmine JS unit tests.
+                    -->
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>1.5</version>
+                        <configuration>
+                            <installDirectory>${frontend.working.dir}</installDirectory>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>javascript-tests</id>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <phase>test</phase>
+                                <configuration>
+                                    <arguments>run test</arguments>
+                                    <workingDirectory>${frontend.working.dir}</workingDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!--
+            Profile to explicitly run Selenium UI tests during build.
+        -->
+        <profile>
+            <id>selenium_tests</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <skip>false</skip>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                    <goal>verify</goal>
+                                </goals>
+                                <phase>verify</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <dependencies>
+        <!-- Test Dependencies -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-firefox-driver</artifactId>
+            <version>3.141.59</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-chrome-driver</artifactId>
+            <version>3.141.59</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-server</artifactId>
+            <version>3.141.59</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>3.3.0</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>

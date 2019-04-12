@@ -1,0 +1,570 @@
+/*
+ * (c) 2018-2019 Cloudera, Inc. All rights reserved.
+ *
+ *  This code is provided to you pursuant to your written agreement with Cloudera, which may be the terms of the
+ *  Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+ *  to distribute this code.  If you do not have a written agreement with Cloudera or with an authorized and
+ *  properly licensed third party, you do not have any rights to this code.
+ *
+ *  If this code is provided to you under the terms of the AGPLv3:
+ *   (A) CLOUDERA PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+ *   (B) CLOUDERA DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+ *       LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+ *   (C) CLOUDERA IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+ *       FROM OR RELATED TO THE CODE; AND
+ *   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, CLOUDERA IS NOT LIABLE FOR ANY
+ *       DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED
+ *       TO, DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR
+ *       UNAVAILABILITY, OR LOSS OR CORRUPTION OF DATA.
+ */
+@import '../../../../../node_modules/@nifi-fds/core/common/styles/globalVars';
+
+@mixin canvas-theme($theme) {
+  $primaryColor: map-get(map-get($theme, primary), 500);
+  $primaryColorHover: map-get(map-get($theme, primary), 100);
+  $accentColor: map-get(map-get($theme, accent), 500);
+  $accentColorHover: map-get(map-get($theme, accent), 100);
+  $warnColor: map-get(map-get($theme, warn), 500);
+
+  /* svg styles */
+
+  .unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  text.unset {
+    font-style: italic;
+    font-weight: normal;
+    fill: $grey3;
+  }
+
+  .moveable {
+    cursor: pointer;
+  }
+
+  .required {
+    font-weight: bold !important;
+  }
+
+  /*
+      All components
+  */
+
+  g.component {
+    font-family: Roboto;
+  }
+
+  g.component rect.body {
+    fill: #ffffff;
+  }
+
+  g.component.selected rect.border {
+    stroke: $primaryColor !important;
+    stroke-width: 3;
+  }
+
+  g.component.selected circle.border {
+    stroke: $accentColor;
+    stroke-width: 2;
+    stroke-opacity: 1;
+  }
+
+  g.component:hover circle.border {
+    stroke: rgba($accentColor, .25);
+    stroke-width: 5;
+  }
+
+  text.stats-label {
+    fill: $grey3;
+    font-size: 10px;
+    text-transform: uppercase;
+    font-weight: lighter;
+  }
+
+  text.stats-value {
+    font-size: 12px;
+  }
+
+  /*
+      Selection
+  */
+
+  g.component.connectable-destination rect.border {
+    stroke: #00ff00;
+    stroke-width: 3;
+  }
+
+  rect.component-selection, rect.drag-selection, rect.label-drag {
+    stroke: #444444;
+    stroke-opacity: 0.5;
+    fill: transparent;
+  }
+
+  /*
+      Connectable
+   */
+
+  text.add-connect {
+    cursor: pointer;
+    font-family: FontAwesome;
+    font-size: 28px;
+    fill: $accentColor;
+  }
+
+  path.connector {
+    fill: none;
+    pointer-events: none;
+    stroke: $warnColor;
+    stroke-width: 3;
+    stroke-opacity: 0.5;
+    stroke-dasharray: 2;
+  }
+
+  path.connector.connectable {
+    stroke: #00ff00;
+    stroke-width: 3;
+    stroke-dasharray: 4;
+  }
+
+  /* processors */
+
+  text.processor-icon {
+    fill: #ffffff;
+    font-family: FontAwesome;
+    font-size: 60px;
+  }
+
+  text.processor-name {
+    font-family: Roboto;
+    font-size: 14px;
+  }
+
+  text.processor-type {
+    font-family: Roboto;
+    font-size: 10px;
+  }
+
+  circle.run-status-icon-background {
+    fill-opacity: 0.80;
+    fill: #f9fafb;
+  }
+
+  /* remote process groups */
+
+  text.remote-process-group-icon {
+    fill: #ffffff;
+    font-family: FontAwesome;
+    font-size: 60px;
+  }
+
+  text.remote-process-group-url {
+    font-family: Roboto;
+    font-size: 14px;
+  }
+
+  /* funnels */
+
+  text.funnel-icon {
+    fill: #ffffff;
+    font-family: FontAwesome;
+    font-size: 60px;
+  }
+
+  /*
+      Connection
+  */
+
+  g.connection {
+    font-family: Roboto;
+  }
+
+  g.connection rect.body {
+    fill: #fff;
+    rx: 2px;
+  }
+
+  g.connection:hover rect.border {
+    stroke: rgba($accentColor, .25);
+    stroke-width: 5;
+    rx: 2px;
+  }
+
+  g.connection.selected:hover rect.border {
+    stroke: rgba($accentColor, .25);
+    stroke-width: 5;
+  }
+
+  g.connection rect.border.unauthorized {
+    stroke-width: 1.5;
+    stroke: $warnColor;
+    stroke-dasharray: 3, 3;
+  }
+
+  g.connection rect.border.full {
+    stroke: $warnColor;
+    stroke-width: 1;
+  }
+
+  g.connection.selected rect.border {
+    stroke: $accentColor;
+    stroke-width: 3;
+    rx: 2px;
+  }
+
+  g.connection path.connection-path {
+    fill: none;
+    stroke: #000000;
+    stroke-width: 2;
+    cursor: pointer;
+  }
+
+  g.connection path.connection-path.full {
+    stroke: $warnColor;
+  }
+
+  g.connection path.connection-path.unauthorized {
+    stroke: $warnColor;
+    stroke-dasharray: 3, 3;
+  }
+
+  /* grouped connection */
+
+  g.connection.grouped path.connection-path, g.connection.grouped rect.connection-label {
+    stroke-width: 3;
+  }
+
+  /* ghost connection */
+
+  g.connection.ghost path.connection-path, g.connection.ghost rect.connection-label {
+    stroke: $grey3;
+    stroke-dasharray: 4;
+  }
+
+  g.connection path.connection-selection-path {
+    visibility: hidden;
+    stroke-width: 1;
+    stroke: $accentColor;
+    fill: none;
+  }
+
+  g.connection path.connection-path-selectable {
+    visibility: hidden;
+    stroke-width: 20;
+    fill: none;
+    cursor: pointer;
+  }
+
+  g.connection.selected path.connection-selection-path {
+    visibility: visible;
+  }
+
+  g.connection rect.linepoint {
+    visibility: hidden;
+    stroke-width: 1;
+  }
+
+  g.connection.selected rect.linepoint {
+    visibility: visible;
+  }
+
+  g.connection rect.startpoint {
+    stroke: $warnColor;
+    fill: $warnColor;
+  }
+
+  g.connection rect.midpoint {
+    stroke: $accentColor;
+    fill: $accentColor;
+    cursor: pointer;
+  }
+
+  g.connection rect.endpoint {
+    stroke: $primaryColor;
+    fill: $primaryColor;
+    cursor: pointer;
+  }
+
+  /* flow status indicator */
+
+  .flow-status-indicator {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 34px;
+    height: 34px;
+    border-radius: 17px;
+    background-color: #fafafa;
+    text-align: center;
+
+    a {
+      line-height: 34px;
+      font-size: 16px;
+    }
+
+    a.fa-asterisk {
+      color: $grey2;
+    }
+
+    a.fa-check {
+      color: $green1;
+    }
+  }
+
+  .flow-status-tooltip {
+    font-family: Roboto;
+    font-size: 13px;
+    color: $grey2;
+
+    .flow-status-title {
+      font-size: 12px;
+      color: #838383;
+    }
+  }
+
+  /* service button */
+
+  .service-button-container {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+
+    .service-button {
+      background-color: #fafafa;
+      border-radius: 18px;
+      font-family: Roboto;
+      font-size: 14px;
+      color: $grey3;
+    }
+
+    .service-button:hover {
+      border: 5px solid rgba($accentColor, .25);
+      color: $accentColor;
+      margin-left: -5px;
+    }
+  }
+
+  /* global menu */
+
+  .global-actions-container {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+  }
+
+  /*context menu */
+
+  .context-menu {
+    position: absolute;
+    display: none;
+  }
+
+  .context-menu-item-img {
+    float: left;
+  }
+
+  div.context-menu-item-text {
+    line-height: 14px;
+  }
+
+  div.context-menu-group-item-img {
+    float: right;
+    width: 16px;
+    height: 16px;
+    background-size: cover;
+    font-size: 14px;
+  }
+
+  /* TODO: update nifi-fds */
+  body[fds] {
+    h1, h2, h3, h4, h5, h6 {
+      background: unset;
+    }
+
+    input.mat-input-element,
+    textarea.mat-input-element {
+      background-color: white;
+
+      /* subtract 42 (10 for padding-left, 30 for padding right, 2 the 1px border of the input on the left & right) */
+      width: calc(100% - 42px);
+      padding-right: 30px;
+    }
+
+    input.mat-input-element:focus, textarea.mat-input-element:focus {
+      border-color: $accentColor;
+    }
+
+    .fds-primary-dropdown-button-menu .mat-menu-item:hover:not([disabled]), .fds-primary-dropdown-button-menu .mat-menu-item:focus:not([disabled]) {
+      background-color: $grey13 !important;
+    }
+
+    .td-data-table-cell .mat-icon-button {
+      color: $accentColor;
+    }
+
+    .td-data-table-column .fa-caret-up, .td-data-table-column .fa-caret-down {
+      color: $accentColor;
+    }
+
+    .link {
+      color: $accentColor;
+    }
+
+    .td-data-table-row:hover {
+      background-color: $blue4;
+      border: 1px solid $blue3;
+    }
+
+    .mat-tooltip {
+      padding: 10px;
+    }
+
+    .mat-input-container {
+      min-width: unset;
+    }
+
+    mat-form-field.td-chips-form-field.mat-input-container {
+      width: unset;
+    }
+
+    .md-title {
+      font-weight: normal;
+      color: $grey3;
+    }
+
+    .md-subhead {
+      font-weight: lighter;
+    }
+
+    .md-question {
+      font-weight: bold;
+    }
+
+    .td-chip span {
+      font-size: 10px;
+    }
+
+    .mat-dialog-container {
+      width: unset;
+    }
+
+    div.fds-tooltip {
+      border: 0 !important;
+      border-radius: 2px;
+      padding: 10px;
+      font-family: Roboto;
+      font-size: 10px;
+      color: #fff !important;
+      max-width: 500px;
+      word-wrap: break-word;
+      background: $grey2;
+      opacity: .9;
+      box-shadow: inset 0px 0px 3px 0px rgba(19, 145, 193, 1);
+    }
+
+    /*
+      Overriding checkbox style from FDS.
+    */
+    flow-designer-processor-configuration .mat-pseudo-checkbox-checked::after {
+      margin-top: -5px;
+      margin-left: -3px;
+    }
+
+    .mat-focused .mat-form-field-required-marker {
+      color: $red1;
+    }
+
+    .mat-form-field .mat-error {
+      margin-top: 5px;
+    }
+
+    /*
+      Overriding table cell padding
+     */
+
+    .flow-designer-component-listing-table {
+      .pad-left-sm {
+        padding-left: 2px;
+      }
+
+      .pad-bottom-sm {
+        padding-bottom: 2px;
+      }
+
+      .pad-right-sm {
+        padding-right: 2px;
+      }
+
+      .pad-top-sm {
+        padding-top: 2px;
+      }
+    }
+
+    /*
+    Overriding the fds-dialog-title mat-icon color
+     */
+    fds-dialog-title mat-icon.mat-icon.material-icons {
+      color: unset;
+    }
+
+    .link {
+      color: $accentColor;
+    }
+
+    .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background, .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+      background-color: $accentColor;
+    }
+
+    .mat-checkbox-inner-container:hover {
+      background-color: $accentColor;
+    }
+
+    .mat-checkbox-ripple {
+      top: -19px;
+      left: -19px;
+    }
+
+    .mat-checkbox-inner-container {
+      margin-right: 5px;
+    }
+
+    .mat-card-title {
+      line-height: normal;
+    }
+
+    .mat-checkbox-layout .mat-checkbox-label {
+      line-height: unset;
+    }
+
+    .form-field-button {
+      width: 100%;
+      padding: 0 10px;
+    }
+
+    .form-field-button-menu-item {
+      width: 342px;
+    }
+
+    .mat-menu-panel {
+      max-width: unset;
+    }
+
+    .form-field-button-container {
+      margin-bottom: 3px;
+      width: 50%;
+    }
+
+    .form-field-button-label {
+      float: left;
+      text-transform: none;
+    }
+
+    .fds-coaster-message {
+      line-height: normal;
+    }
+  }
+}

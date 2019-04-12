@@ -1,0 +1,23 @@
+{
+    "extends": "eslint-config-airbnb-es5",
+    "env": {
+        "browser": true,
+        "es6": true,
+        "jasmine": true,
+        "jquery": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 5,
+        "sourceType": "module"
+    },
+    "rules": {
+        "indent": 0,
+        "max-len": 0,
+        "valid-jsdoc": 0,
+        "func-names": 0,
+        "eqeqeq": 0,
+        "spaced-comment": 0,
+        "quotes": 0,
+        "dot-notation": 0
+    }
+}

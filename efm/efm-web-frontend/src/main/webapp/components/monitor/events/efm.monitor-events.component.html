@@ -1,0 +1,232 @@
+<!--
+  (c) 2018-2019 Cloudera, Inc. All rights reserved.
+
+  This code is provided to you pursuant to your written agreement with Cloudera, which may be the terms of the
+  Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  to distribute this code.  If you do not have a written agreement with Cloudera or with an authorized and
+  properly licensed third party, you do not have any rights to this code.
+
+  If this code is provided to you under the terms of the AGPLv3:
+   (A) CLOUDERA PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+   (B) CLOUDERA DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+       LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+   (C) CLOUDERA IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+       FROM OR RELATED TO THE CODE; AND
+   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, CLOUDERA IS NOT LIABLE FOR ANY
+       DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED
+       TO, DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR
+       UNAVAILABILITY, OR LOSS OR CORRUPTION OF DATA.
+-->
+
+<div id="efm-monitor-events-list-container"
+     [ngClass]="{ 'is-event-open' : selectedEventId !== null }"
+     fxLayout="column">
+    <div id="efm-monitor-events-list-header">
+        <mat-card-title class="ellipsis">
+            Events
+        </mat-card-title>
+    </div>
+    <div id="efm-monitor-events-list-filter-container"
+         class="pad-bottom-sm">
+        <div fxLayoutAlign="end center">
+            <td-chips class="push-right-sm"
+                      inputPosition="after"
+                      placeholder="Filter"
+                      [(ngModel)]="searchCriteria"
+                      (add)="updateSearchCriteria($event);"
+                      (remove)="removeSearchCriteria($event);">
+                <ng-template td-chip
+                             let-chip="chip">
+                    <span matTooltip="{{chip.label}}: {{chip.searchText}}">
+                        {{chip.label}}: {{chip.searchText}}
+                    </span>
+                </ng-template>
+            </td-chips>
+            <span class="table-filter-label">by:</span>
+            <button class="table-filter table-filter-width-md"
+                    [matMenuTriggerFor]="searchFieldMenu"
+                    matTooltip={{searchField.label}}>
+                <div fxLayout="row">
+                    <span class="ellipsis push-right-sm"
+                          fxFlex>
+                        {{searchField.label}}
+                    </span>
+                    <i class="fa fa-caret-down"
+                       aria-hidden="true"
+                       fxFlex="10"></i>
+                </div>
+            </button>
+            <mat-menu #searchFieldMenu="matMenu"
+                      [overlapTrigger]="false">
+                <button mat-menu-item
+                        *ngFor="let column of getSearchableColumns()"
+                        (click)="searchField = column;"> {{column.label}}
+                </button>
+            </mat-menu>
+        </div>
+    </div>
+    <div id="efm-monitor-events-list-column-header"
+         fxLayout="row"
+         fxLayoutAlign="space-between center"
+         class="td-data-table">
+        <div class="td-data-table-column"
+             (click)="sortEvents(column);"
+             *ngFor="let column of eventColumns"
+             fxFlex="{{column.width}}"
+             matTooltip="{{column.label}}">
+            {{column.label}}
+            <i *ngIf="column.active && column.sortable && column.sortOrder === 'ASC'"
+               class="fa fa-caret-up"
+               aria-hidden="true"></i>
+            <i *ngIf="column.active && column.sortable && column.sortOrder === 'DESC'"
+               class="fa fa-caret-down"
+               aria-hidden="true"></i>
+        </div>
+        <div class="td-data-table-column"
+             fxFlex="3">
+            <div fxLayout="row"
+                 fxLayoutAlign="end center"></div>
+        </div>
+    </div>
+    <div fxFlex="grow" id="efm-monitor-events-list">
+        <div *ngIf="isLoading"
+             fxFill
+             fxLayoutAlign="center center">
+            <mat-progress-spinner mode="indeterminate"
+                                  color="primary"></mat-progress-spinner>
+        </div>
+        <div *ngIf="!isLoading">
+            <div fxLayout="row"
+                 fxLayoutAlign="space-between center"
+                 class="td-data-table-row"
+                 *ngFor="let event of events; let i = index;"
+                 (click)="selectEventByRow(event);"
+                 [ngClass]="{ 'selected' : event.id === selectedEventId }">
+                <div class="td-data-table-cell"
+                     *ngFor="let column of eventColumns"
+                     fxFlex="{{column.width}}">
+                    <div class="ellipsis"
+                         matTooltip="{{event[column.name]}}">
+                        <a *ngIf="column.link && event.links[column.link]"
+                           class="link"
+                           href="{{event.links[column.link].href}}"
+                           target="_blank">
+                            {{event.links[column.link].title}}
+                        </a>
+                        <span *ngIf="!column.link || !event.links[column.link]"
+                              class="text-{{event[column.name]}}">
+                                {{column.format ? column.format(event[column.name]) : event[column.name]}}
+                            </span>
+                    </div>
+                </div>
+                <div class="td-data-table-cell"
+                     fxFlex="3">
+                    <div fxFill
+                         fxLayoutAlign="center center">
+                        <button *ngIf="event.links.detail"
+                                (click)="selectEvent(event);"
+                                matTooltip="Event Details"
+                                mat-icon-button
+                                color="accent">
+                            <i class="fa fa-info-circle"
+                               aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mat-padding"
+             *ngIf="!isLoading && (!events || events.length === 0)"
+             layout="row"
+             layout-align="center center">
+            <h3>No results to display.</h3>
+        </div>
+    </div>
+    <div id="efm-monitor-events-list-footer">
+        <div fxLayout="row"
+             fxLayoutAlign="end center"
+             class="push-left-md">
+            <div *ngIf="newEventCount > 0"
+                 class="efm-monitor-events-new-events-container">
+                {{newEventCount}} new events available
+                <a class="link push-left-md"
+                   (click)="reloadEvents()"
+                   matTooltip="Reload events using existing search and sort criteria">
+                    Reload
+                </a>
+                or
+                <a class="link"
+                   (click)="showLatest()"
+                   matTooltip="Reloads events sorting by latest using existing search criteria">
+                    Show Latest
+                </a>
+            </div>
+            <div class="push-right-md"
+                 fxLayoutAlign="end center">
+                <span class="ellipsis table-filter-label">
+                    Time range:
+                </span>
+                <button
+                        class="table-filter table-filter-width-md"
+                        [matMenuTriggerFor]="timeRangeMenu">
+                    <div fxLayout="row">
+                        <span class="ellipsis push-right-sm"
+                              fxFlex>
+                            {{activeTimeRange}}
+                        </span>
+                        <i class="fa fa-caret-down"
+                           aria-hidden="true"
+                           fxFlex="10"></i>
+                    </div>
+                </button>
+                <mat-menu #timeRangeMenu="matMenu"
+                          [overlapTrigger]="false">
+                    <button mat-menu-item
+                            *ngFor="let tr of timeRanges"
+                            (click)="onTimeRangeChange(tr);">
+                        {{tr.label}}
+                    </button>
+                </mat-menu>
+            </div>
+            <div class="push-right-md"
+                 fxLayoutAlign="end center">
+                <span class="ellipsis table-filter-label">
+                    Rows per page:
+                </span>
+                <button
+                        class="table-filter table-filter-width-sm"
+                        [matMenuTriggerFor]="rowsMenu">
+                    <div fxLayout="row">
+                        <span class="ellipsis push-right-sm"
+                              fxFlex>{{rowsCount}}</span>
+                        <i class="fa fa-caret-down"
+                           aria-hidden="true"
+                           fxFlex="10"></i>
+                    </div>
+                </button>
+                <mat-menu #rowsMenu="matMenu"
+                          [overlapTrigger]="false">
+                    <button mat-menu-item
+                            *ngFor="let r of rows"
+                            (click)="onRowsChange(r);">
+                        {{r.label}}
+                    </button>
+                </mat-menu>
+            </div>
+            <td-paging-bar id="efm-monitor-events-list-paging-bar"
+                           #pagingBar
+                           [initialPage]="pageNumber"
+                           [pageSize]="rowsCount"
+                           [total]="eventCount"
+                           (change)="page($event)">
+                {{ pagingBar.range }} of {{ pagingBar.total }}
+            </td-paging-bar>
+        </div>
+    </div>
+</div>
+
+<efm-monitor-event-details
+        *ngIf="selectedEventId !== null"
+        [event]="selectedEvent"
+        [(onClose)]="unselectEvent">
+</efm-monitor-event-details>

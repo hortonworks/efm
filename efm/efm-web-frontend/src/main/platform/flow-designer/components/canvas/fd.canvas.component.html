@@ -1,0 +1,98 @@
+<!--
+  (c) 2018-2019 Cloudera, Inc. All rights reserved.
+
+  This code is provided to you pursuant to your written agreement with Cloudera, which may be the terms of the
+  Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  to distribute this code.  If you do not have a written agreement with Cloudera or with an authorized and
+  properly licensed third party, you do not have any rights to this code.
+
+  If this code is provided to you under the terms of the AGPLv3:
+   (A) CLOUDERA PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+   (B) CLOUDERA DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+       LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+   (C) CLOUDERA IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+       FROM OR RELATED TO THE CODE; AND
+   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, CLOUDERA IS NOT LIABLE FOR ANY
+       DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED
+       TO, DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR
+       UNAVAILABILITY, OR LOSS OR CORRUPTION OF DATA.
+-->
+
+<div #flowDesignerCanvasElementRef
+     class="unselectable canvas-container"
+     (drop)="dropHandler($event)"
+     (dragover)="allowDrop($event)">
+    <div [hidden]="!isFlowLoaded()"
+         class="flow-status-indicator">
+        <a *ngIf="isFlowDirty()"
+           class="fa fa-asterisk"></a>
+        <a *ngIf="!isFlowDirty()"
+           class="fa fa-check"></a>
+    </div>
+    <div [hidden]="!isFlowLoaded()"
+         class="service-button-container">
+        <button mat-raised-button
+                class="service-button"
+                tabindex="-1"
+                (click)="openServices()"
+                disableRipple>
+            SERVICES
+        </button>
+    </div>
+    <div *ngIf="globalMenuItems.length > 0"
+         class="global-actions-container">
+        <button mat-raised-button
+                color="fds-regular"
+                tabindex="-1"
+                [matMenuTriggerFor]="globalMenu">
+            ACTIONS<i class="fa fa-caret-down" aria-hidden="true"></i>
+        </button>
+        <mat-menu #globalMenu="matMenu"
+                  [overlapTrigger]="false">
+            <ng-container *ngFor="let globalMenuItem of globalMenuItems">
+                <button mat-menu-item
+                        *ngIf="!globalMenuItem.separator && globalMenuItem.condition()"
+                        (click)="globalMenuItem.menuItem.action()">
+                    <span>
+                        {{globalMenuItem.menuItem.text}}
+                    </span>
+                </button>
+                <mat-divider *ngIf="globalMenuItem.separator && globalMenuItem.condition()"></mat-divider>
+            </ng-container>
+        </mat-menu>
+    </div>
+    <div #contextMenuElementRef
+         class="mat-elevation-z5 context-menu mat-menu-content mat-menu-panel unselectable"></div>
+    <div class="canvas-tooltips">
+        <div class="flow-status-tooltip tooltip">
+            <div *ngIf="!isFlowDirty()">
+                You are viewing the current published version of this flow.
+            </div>
+            <div *ngIf="isFlowDirty() && !isFlowPublished()">
+                This flow has not been published.
+            </div>
+            <div *ngIf="isFlowDirty() && isFlowPublished()">
+                This flow has been modified since the last published version.
+            </div>
+            <div *ngIf="isFlowPublished()"
+                 class="push-top-md">
+                <div class="flow-status-title">
+                    PUBLISHED VERSION
+                </div>
+                <div class="push-top-sm">
+                    {{getFlowVersion()}}
+                </div>
+            </div>
+            <div *ngIf="isFlowPublished()"
+                 class="push-top-md">
+                <div class="flow-status-title">
+                    PUBLISHED ON
+                </div>
+                <div class="push-top-sm">
+                    {{getFlowVersionTimestamp()}}
+                </div>
+            </div>
+        </div>
+        <div class="processor-tooltips"></div>
+    </div>
+</div>

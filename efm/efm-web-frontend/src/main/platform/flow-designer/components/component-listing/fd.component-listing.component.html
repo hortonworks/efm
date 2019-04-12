@@ -1,0 +1,110 @@
+<!--
+  (c) 2018-2019 Cloudera, Inc. All rights reserved.
+
+  This code is provided to you pursuant to your written agreement with Cloudera, which may be the terms of the
+  Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+  to distribute this code.  If you do not have a written agreement with Cloudera or with an authorized and
+  properly licensed third party, you do not have any rights to this code.
+
+  If this code is provided to you under the terms of the AGPLv3:
+   (A) CLOUDERA PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+   (B) CLOUDERA DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+       LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+   (C) CLOUDERA IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+       FROM OR RELATED TO THE CODE; AND
+   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, CLOUDERA IS NOT LIABLE FOR ANY
+       DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED
+       TO, DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR
+       UNAVAILABILITY, OR LOSS OR CORRUPTION OF DATA.
+-->
+
+
+<div #componentListingElementRef class="flow-designer-component-listing" fxFill [@flyInOut]>
+    <button mat-icon-button (click)="close()" color="accent" class="push-left-md push-top-sm">
+        <mat-icon color="accent">arrow_back</mat-icon>
+        <span class="uppercase link">Back to flow</span>
+    </button>
+    <div class="flow-designer-component-listing-content">
+        <div fxLayout="row" fxLayoutAlign="space-between center"
+             class="pad-top-md pad-bottom-md pad-left-md pad-right-md">
+            <span class="md-card-title">{{title}}</span>
+            <button mat-raised-button
+                    data-automation-id="add-service-button"
+                    class="uppercase"
+                    (click)="extensionCreation()"
+                    color="fds-regular">Add Service
+            </button>
+        </div>
+        <div class="flow-designer-component-listing-table">
+            <div fxLayout="row"
+                 fxLayoutAlign="space-between center"
+                 class="td-data-table">
+                <div class="td-data-table-cell pad-right-sm" fxFlex="50px">
+                    <div fxLayout="row" fxLayoutAlign="end center"></div>
+                </div>
+                <div class="td-data-table-column pad-left-sm"
+                     (click)="sortComponents(column, ((column.sortOrder === 'ASC') ? 'DESC' : 'ASC'));"
+                     *ngFor="let column of componentColumns"
+                     fxFlex="{{column.width}}">
+                    {{column.label}}
+                    <i *ngIf="column.active && column.sortable && column.sortOrder === 'ASC'" class="fa fa-caret-up"
+                       aria-hidden="true"></i>
+                    <i *ngIf="column.active && column.sortable && column.sortOrder === 'DESC'" class="fa fa-caret-down"
+                       aria-hidden="true"></i>
+                </div>
+                <div class="td-data-table-column" fxFlex="10">
+                    <div fxLayout="row" fxLayoutAlign="end center"></div>
+                </div>
+            </div>
+            <div class="flow-designer-component-listing-list">
+                <div
+                        fxLayout="row"
+                        fxLayoutAlign="space-between center"
+                        class="td-data-table-row"
+                        *ngFor="let component of filteredComponents">
+                    <div class="td-data-table-cell pad-right-sm" fxFlex="50px">
+                        <i *ngIf="component.validationErrors.length > 0" class="fa fa-exclamation-triangle"
+                           [ngClass]="{'invalid' : component.validationErrors.length > 0}" (mouseenter)="showTip($event)" (mouseleave)="hideTip($event)" aria-hidden="true"></i>
+                        <div *ngIf="component.validationErrors.length > 0" class="tooltip">
+                            <ul class="unordered">
+                                <li *ngFor="let validationError of component.validationErrors">{{validationError}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="td-data-table-cell pad-left-sm"
+                         *ngFor="let column of componentColumns" fxFlex="{{column.width}}">
+                        <div class="ellipsis" [ngClass]="{'invalid' : component.validationErrors.length > 0}"
+                             matTooltip="{{column.format ? column.format(component[column.name]) : component[column.name]}}">
+                            {{column.format ?
+                            column.format(component[column.name]) :
+                            component[column.name]}}
+                        </div>
+                    </div>
+                    <div class="td-data-table-cell" fxFlex="10">
+                        <button (click)="executeComponentAction({'name': 'configure'}, component)"
+                                matTooltip="Configure" mat-icon-button color="accent">
+                            <i class="fa fa-cog" aria-hidden="true"></i>
+                        </button>
+                        <button (click)="executeComponentAction({'name': 'delete'}, component)"
+                                matTooltip="Remove" mat-icon-button color="accent">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+                <div
+                        fxLayout="row"
+                        fxLayoutAlign="space-between center"
+                        class="td-data-table-row"
+                        *ngIf="filteredComponents.length === 0">
+                    <div class="td-data-table-cell"
+                         fxFlex="100">
+                        <div class="ellipsis italic" data-automation-id="no-services-added-message"
+                             matTooltip="No services have been added">
+                            No services have been added
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

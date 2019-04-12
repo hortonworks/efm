@@ -1,0 +1,35 @@
+apiVersion: 1
+
+providers:
+- name: 'efm-prometheus'
+  orgId: 1
+  folder: 'EFM Prometheus'
+  type: file
+  disableDeletion: false
+  editable: true
+  options:
+    path: /etc/grafana/provisioning/dashboards/prometheus
+- name: 'demo'
+  orgId: 1
+  folder: 'Demo'
+  type: file
+  disableDeletion: false
+  editable: true
+  options:
+    path: /etc/grafana/provisioning/dashboards/demo
+# - name: 'c2-graphite'
+#   orgId: 1
+#   folder: ''
+#   type: file
+#   disableDeletion: false
+#   editable: true
+#   options:
+#     path: /etc/grafana/provisioning/dashboards/graphite
+# - name: 'c2-influx'
+#   orgId: 1
+#   folder: ''
+#   type: file
+#   disableDeletion: false
+#   editable: true
+#   options:
+#     path: /etc/grafana/provisioning/dashboards/influx

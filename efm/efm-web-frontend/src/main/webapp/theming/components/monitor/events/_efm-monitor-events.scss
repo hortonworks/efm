@@ -1,0 +1,97 @@
+/*
+ * (c) 2018-2019 Cloudera, Inc. All rights reserved.
+ *
+ *  This code is provided to you pursuant to your written agreement with Cloudera, which may be the terms of the
+ *  Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+ *  to distribute this code.  If you do not have a written agreement with Cloudera or with an authorized and
+ *  properly licensed third party, you do not have any rights to this code.
+ *
+ *  If this code is provided to you under the terms of the AGPLv3:
+ *   (A) CLOUDERA PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+ *   (B) CLOUDERA DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+ *       LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+ *   (C) CLOUDERA IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+ *       FROM OR RELATED TO THE CODE; AND
+ *   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, CLOUDERA IS NOT LIABLE FOR ANY
+ *       DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED
+ *       TO, DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR
+ *       UNAVAILABILITY, OR LOSS OR CORRUPTION OF DATA.
+ */
+
+#efm-monitor-events-list-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  background: white;
+  padding: 24px 24px 0px 24px;
+
+  transition: bottom 0.5s;
+
+  &.is-event-open {
+    bottom: 50%;
+  }
+
+  .td-data-table-cell,
+  .td-data-table-column {
+    padding: 0 5px;
+  }
+}
+
+#efm-monitor-events-list {
+  overflow: auto;
+
+    .text {
+        &-WARN {
+            color: #e98a40;
+        }
+
+        &-ERROR {
+            color: #ef6162;
+        }
+
+        &-FATAL {
+            color: #ce376c;
+            font-weight: bold;
+        }
+    }
+}
+
+#efm-monitor-events-list-footer {
+  height: 48px;
+}
+
+.efm-monitor-events-new-events-container {
+  margin-right: auto;
+}
+
+.table-filter {
+  border: none;
+  color: $blue1;
+
+  &:focus {
+    outline: none;
+  }
+
+  &-label {
+    color: $grey3;
+    font-size: 12px;
+    line-height: normal;
+  }
+
+  &-width-md {
+    width: 150px;
+  }
+
+  &-width-sm {
+    width: 50px;
+  }
+}
+
+#efm-monitor-events-list-filter-container {
+  max-height: 200px;
+  overflow: auto;
+  min-height: 66px;
+}
+

@@ -1,0 +1,130 @@
+# (c) 2018-2019 Cloudera, Inc. All rights reserved.
+#
+#  This code is provided to you pursuant to your written agreement with Cloudera, which may be the terms of the
+#  Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+#  to distribute this code.  If you do not have a written agreement with Cloudera or with an authorized and
+#  properly licensed third party, you do not have any rights to this code.
+#
+#  If this code is provided to you under the terms of the AGPLv3:
+#   (A) CLOUDERA PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+#   (B) CLOUDERA DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+#       LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+#   (C) CLOUDERA IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+#       FROM OR RELATED TO THE CODE; AND
+#   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, CLOUDERA IS NOT LIABLE FOR ANY
+#       DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED
+#       TO, DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR
+#       UNAVAILABILITY, OR LOSS OR CORRUPTION OF DATA.
+version: "3.5"
+
+# This is the base configuration for a docker-compose environment of DFM services.
+# To add other optional services into this environment, overlay additional yaml files.
+# For example:
+#
+#   docker-compose -f docker-compose-base.yml -f docker-compose-proxy.yml up -d
+#
+
+services:
+
+  registry:
+    image: apache/nifi-registry:0.3.0
+    networks:
+      - private
+
+  nifi:
+    image: hortonworks/test-nifi:latest
+    ports:
+      - "8080"  # UI
+      - "10000" # Site-to-Site Input Port
+    networks:
+      - private
+
+  flowops:
+    image: kevdoran/flowops:0.1.0
+    networks:
+      - private
+    environment:
+      - NIFI_URL=http://nifi:8080
+      - REGISTRY_URL=http://registry:18080
+      - REGISTRY_NAME=DockerRegistry
+      - REGISTRY_BUCKET_NAME=test_bucket
+    command: [
+      # The entrypoint is /bin/bash, the -c flag treats the command string as parts rather than single string arg
+      -c, "create-registry-bucket && add-registry-to-nifi"
+    ]
+    depends_on:
+      - registry
+      - nifi
+
+  c2:
+    image: hortonworks/efm
+    ports:
+      - 10080:10080
+    environment:
+      - EFM_NIFI_REGISTRY_ENABLED=true
+      - EFM_NIFI_REGISTRY_URL=http://registry:18080
+      - EFM_NIFI_REGISTRY_BUCKET_NAME=test_bucket  # This must match the flowops REGISTRY_BUCKET_NAME env var
+      - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
+      - EFM_DASHBOARD_BASE_URL=http://localhost:3000
+      - EFM_DASHBOARD_URL_AGENT=/d/efm-agent/?var-agentId={agentId}
+      - EFM_DASHBOARD_URL_AGENTCLASS=/d/efm-agent-class/?var-agentClass={agentClass}
+      - EFM_SERVER_REQUEST_LOG_ENABLED=false # enables HTTP request body logging at the EFM server
+      - LOGGING_LEVEL_COM_CLOUDERA_CEM_EFM_WEB_FILTER=DEBUG
+    networks:
+      - private
+    depends_on:
+      - flowops
+
+  agent:
+    image: hortonworks/test-nifi-minifi-cpp
+    environment:
+      - LOG_LEVEL=DEBUG
+    networks:
+      - public
+
+  agent_techops:
+    image: hortonworks/test-nifi-minifi-cpp
+    environment:
+      - AGENT_CLASS=techops
+      - LOG_LEVEL=DEBUG
+    networks:
+      - public
+
+  java_agent:
+    image: hortonworks/test-nifi-minifi-java
+    networks:
+      - public
+
+  prometheus:
+    image: quay.io/prometheus/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus-image/script:/script:ro
+    command: "--config.file=/script/prometheus.yml"
+    networks:
+      - private
+    depends_on:
+      - c2
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+    environment:
+      - PUBLIC_URL=http://localhost:3000/
+    user: "472"
+    volumes:
+      - ./grafana-image/script:/script:ro
+      - ./grafana-image/provisioning/:/etc/grafana/provisioning/:ro
+      # - ./grafana-image/data:/var/lib/grafana:rw  # enable for dashboard development
+    command: "--config /script/grafana.ini"
+    networks:
+      - private
+    depends_on:
+      - prometheus
+
+networks:
+  public:  # simulate open network, such as the public internet, where things such as agents run.
+  private: # private network. services on the private network can access each other directly.
+           #                  other services can only access private services that are exposed through reverse proxy

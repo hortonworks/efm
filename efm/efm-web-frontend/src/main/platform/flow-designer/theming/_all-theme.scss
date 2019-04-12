@@ -1,0 +1,56 @@
+/*
+ * (c) 2018-2019 Cloudera, Inc. All rights reserved.
+ *
+ *  This code is provided to you pursuant to your written agreement with Cloudera, which may be the terms of the
+ *  Affero General Public License version 3 (AGPLv3), or pursuant to a written agreement with a third party authorized
+ *  to distribute this code.  If you do not have a written agreement with Cloudera or with an authorized and
+ *  properly licensed third party, you do not have any rights to this code.
+ *
+ *  If this code is provided to you under the terms of the AGPLv3:
+ *   (A) CLOUDERA PROVIDES THIS CODE TO YOU WITHOUT WARRANTIES OF ANY KIND;
+ *   (B) CLOUDERA DISCLAIMS ANY AND ALL EXPRESS AND IMPLIED WARRANTIES WITH RESPECT TO THIS CODE, INCLUDING BUT NOT
+ *       LIMITED TO IMPLIED WARRANTIES OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE;
+ *   (C) CLOUDERA IS NOT LIABLE TO YOU, AND WILL NOT DEFEND, INDEMNIFY, OR HOLD YOU HARMLESS FOR ANY CLAIMS ARISING
+ *       FROM OR RELATED TO THE CODE; AND
+ *   (D) WITH RESPECT TO YOUR EXERCISE OF ANY RIGHTS GRANTED TO YOU FOR THE CODE, CLOUDERA IS NOT LIABLE FOR ANY
+ *       DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, PUNITIVE OR CONSEQUENTIAL DAMAGES INCLUDING, BUT NOT LIMITED
+ *       TO, DAMAGES RELATED TO LOST REVENUE, LOST PROFITS, LOSS OF INCOME, LOSS OF BUSINESS ADVANTAGE OR
+ *       UNAVAILABILITY, OR LOSS OR CORRUPTION OF DATA.
+ */
+@import '../../../node_modules/@angular/material/theming';
+@import '../../../node_modules/@covalent/core/theming/all-theme';
+@import '../../../node_modules/@nifi-fds/core/theming/all-theme';
+@import 'slick-grid/structureElements';
+@import 'jquery/combo/structureElements';
+@import 'components/canvas/structureElements';
+@import 'components/draggable/structureElements';
+@import 'components/component-listing/structureElements';
+@import 'components/property-table/structureElements';
+@import 'components/creation/extension/structureElements';
+@import 'components/configuration/processor/structureElements';
+@import 'components/configuration/connection/structureElements';
+@import 'components/jquery/nfeditor/structureElements';
+@import 'components/jquery/nfeditor/languages/structureElements';
+
+// Create a theme.
+@mixin flow-designer-theme($theme) {
+
+  // Include theme styles for core and each component used in your app.
+  // Alternatively, you can import and @include the theme mixins for each component
+  // that you are using.
+  @include angular-material-theme($theme);
+  @include covalent-theme($theme);
+  @include fds-theme($theme);
+  @include slick-grid-theme($theme);
+  @include combo-theme($theme);
+  @include property-table-theme($theme);
+  @include canvas-theme($theme);
+  @include component-listing-theme($theme);
+  @include extension-creation-theme($theme);
+  @include processor-configuration-theme($theme);
+  @include connection-configuration-theme($theme);
+  @include draggable-canvas-component-theme($theme);
+  @include nfeditor-theme($theme);
+  @include nfeditor-languages-theme($theme);
+
+}

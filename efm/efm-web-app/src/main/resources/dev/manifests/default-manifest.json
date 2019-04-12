@@ -1,0 +1,2101 @@
+{
+	"buildInfo": {
+                "compiler": "/usr/bin/c++",
+                "flags": " -std=c++11 -DOPENSSL_SUPPORT",
+                "revision": "0785b32507e89ae9fa649a1df47f98f19fade4bb",
+                "timestamp": 1544732055,
+                "version": "0.6.0"
+            },
+            "bundles": [
+                {
+                    "artifact": "minifi-expression-language-extensions",
+                    "group": "org.apache.nifi.minifi",
+                    "version": "0.6.0"
+                },
+                {
+                    "componentManifest": {
+                        "processors": [
+                            {
+                                "propertyDescriptors": {
+                                    "Always Output Response": {
+                                        "defaultValue": false,
+                                        "description": "Will force a response FlowFile to be generated and routed to the 'Response' relationship regardless of what the server status code received is ",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Always Output Response",
+                                        "required": false,
+                                        "validator": "BOOLEAN_VALIDATOR"
+                                    },
+                                    "Attributes to Send": {
+                                        "description": "Regular expression that defines which attributes to send as HTTP headers in the request. If not defined, no attributes are sent as headers.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Attributes to Send",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Connection Timeout": {
+                                        "defaultValue": "5 secs",
+                                        "description": "Max wait time for connection to remote service.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Connection Timeout",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Content-type": {
+                                        "defaultValue": "application/octet-stream",
+                                        "description": "The Content-Type to specify for when content is being transmitted through a PUT, POST or PATCH. In the case of an empty value after evaluating an expression language expression, Content-Type defaults to",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Content-type",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Disable Peer Verification": {
+                                        "defaultValue": false,
+                                        "description": "Disables peer verification for the SSL session",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Disable Peer Verification",
+                                        "required": false,
+                                        "validator": "BOOLEAN_VALIDATOR"
+                                    },
+                                    "HTTP Method": {
+                                        "defaultValue": "GET",
+                                        "description": "HTTP request method (GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS). Arbitrary methods are also supported. Methods other than POST, PUT and PATCH will be sent without a message body.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "HTTP Method",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Include Date Header": {
+                                        "defaultValue": true,
+                                        "description": "Include an RFC-2616 Date header in the request.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Include Date Header",
+                                        "required": false,
+                                        "validator": "BOOLEAN_VALIDATOR"
+                                    },
+                                    "Proxy Host": {
+                                        "description": "The fully qualified hostname or IP address of the proxy server",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Proxy Host",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Proxy Port": {
+                                        "description": "The port of the proxy server",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Proxy Port",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Read Timeout": {
+                                        "defaultValue": "15 secs",
+                                        "description": "Max wait time for response from remote service.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Read Timeout",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Remote URL": {
+                                        "description": "Remote URL which will be connected to, including scheme, host, port, path.",
+                                        "expressionLanguageScope": "FLOWFILE_ATTRIBUTES",
+                                        "name": "Remote URL",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "SSL Context Service": {
+                                        "exclusiveOfProperties": {
+                                            "Remote URL": "^http:.*$"
+                                        },
+                                        "typeProvidedByValue": {
+                                            "artifact": "minifi-system",
+                                            "group": "org.apache.nifi.minifi",
+                                            "type": "org.apache.nifi.minifi.controllers.SSLContextService"
+                                        },
+                                        "description": "The SSL Context Service used to provide client certificate information for TLS/SSL (https) connections.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "SSL Context Service",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Use Chunked Encoding": {
+                                        "defaultValue": false,
+                                        "description": "When POST'ing, PUT'ing or PATCH'ing content set this property to true in order to not pass the 'Content-length' header and instead send 'Transfer-Encoding' with a value of 'chunked'. This will enable the data transfer mechanism which was introduced in HTTP 1.1 to pass data of unknown lengths in chunks.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Use Chunked Encoding",
+                                        "required": false,
+                                        "validator": "BOOLEAN_VALIDATOR"
+                                    },
+                                    "invokehttp-proxy-password": {
+                                        "description": "Password to set when authenticating against proxy",
+                                        "displayName": "Proxy Password",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "invokehttp-proxy-password",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "invokehttp-proxy-user": {
+                                        "description": "Username to set when authenticating against proxy",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "invokehttp-proxy-user",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "send-message-body": {
+                                        "defaultValue": true,
+                                        "description": "If true, sends the HTTP message body on POST/PUT/PATCH requests (default).  If false, suppresses the message body and content-type header for these requests.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "send-message-body",
+                                        "required": false,
+                                        "validator": "BOOLEAN_VALIDATOR"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "All files are routed to success",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.InvokeHTTP",
+                                "typeDescription": "An HTTP client processor which can interact with a configurable HTTP Endpoint. The destination URL and HTTP Method are configurable. FlowFile attributes are converted to HTTP headers and the FlowFile contents are included as the body of the request (if the HTTP Method is PUT, POST or PATCH)."
+                            }
+                        ]
+                    },
+                    "artifact": "minifi-http-curl",
+                    "group": "org.apache.nifi.minifi",
+                    "version": "0.6.0"
+                },
+                {
+                    "componentManifest": {
+                        "processors": [
+                            {
+                                "propertyDescriptors": {
+                                    "Authorized DN Pattern": {
+                                        "defaultValue": ".*",
+                                        "description": "A Regular Expression to apply against the Distinguished Name of incoming connections. If the Pattern does not match the DN, the connection will be refused.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Authorized DN Pattern",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Base Path": {
+                                        "defaultValue": "contentListener",
+                                        "description": "Base path for incoming connections",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Base Path",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "HTTP Headers to receive as Attributes (Regex)": {
+                                        "description": "Specifies the Regular Expression that determines the names of HTTP Headers that should be passed along as FlowFile attributes",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "HTTP Headers to receive as Attributes (Regex)",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Listening Port": {
+                                        "defaultValue": 80,
+                                        "description": "The Port to listen on for incoming connections",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Listening Port",
+                                        "required": true,
+                                        "validator": "PORT_VALIDATOR"
+                                    },
+                                    "SSL Certificate": {
+                                        "description": "File containing PEM-formatted file including TLS/SSL certificate and key",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "SSL Certificate",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "SSL Certificate Authority": {
+                                        "description": "File containing trusted PEM-formatted certificates",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "SSL Certificate Authority",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "SSL Minimum Version": {
+                                        "allowableValues": [
+                                            {
+                                                "displayName": "SSL2",
+                                                "value": "SSL2"
+                                            },
+                                            {
+                                                "displayName": "SSL3",
+                                                "value": "SSL3"
+                                            },
+                                            {
+                                                "displayName": "TLS1.0",
+                                                "value": "TLS1.0"
+                                            },
+                                            {
+                                                "displayName": "TLS1.1",
+                                                "value": "TLS1.1"
+                                            },
+                                            {
+                                                "displayName": "TLS1.2",
+                                                "value": "TLS1.2"
+                                            }
+                                        ],
+                                        "defaultValue": "SSL2",
+                                        "description": "Minimum TLS/SSL version allowed (SSL2, SSL3, TLS1.0, TLS1.1, TLS1.2)",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "SSL Minimum Version",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "SSL Verify Peer": {
+                                        "allowableValues": [
+                                            {
+                                                "displayName": "yes",
+                                                "value": "yes"
+                                            },
+                                            {
+                                                "displayName": "no",
+                                                "value": "no"
+                                            }
+                                        ],
+                                        "defaultValue": "no",
+                                        "description": "Whether or not to verify the client's certificate (yes/no)",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "SSL Verify Peer",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "All files are routed to success",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.ListenHTTP",
+                                "typeDescription": "Starts an HTTP Server and listens on a given base path to transform incoming requests into FlowFiles. The default URI of the Service will be http://{hostname}:{port}/contentListener. Only HEAD, POST, and GET requests are supported. PUT, and DELETE will result in an error and the HTTP response status code 405. The response body text for all requests, by default, is empty (length of 0). A static response body can be set for a given URI by sending input files to ListenHTTP with the http.type attribute set to response_body. The response body FlowFile filename attribute is appended to the Base Path property (separated by a /) when mapped to incoming requests. The mime.type attribute of the response body FlowFile is used for the Content-type header in responses. Response body content can be cleared by sending an empty (size 0) FlowFile for a given URI mapping."
+                            }
+                        ]
+                    },
+                    "artifact": "minifi-civet-extensions",
+                    "group": "org.apache.nifi.minifi",
+                    "version": "0.6.0"
+                },
+                {
+                    "artifact": "minifi-rocksdb-repos",
+                    "group": "org.apache.nifi.minifi",
+                    "version": "0.6.0"
+                },
+                {
+                    "componentManifest": {
+                        "processors": [
+                            {
+                                "propertyDescriptors": {
+                                    "Max Bin Age": {
+                                        "description": "The maximum age of a Bin that will trigger a Bin to be complete. Expected format is <duration> <time unit>",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Max Bin Age",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Maximum Group Size": {
+                                        "description": "The maximum size for the bundle. If not specified, there is no maximum.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Maximum Group Size",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Maximum Number of Entries": {
+                                        "description": "The maximum number of files to include in a bundle. If not specified, there is no maximum.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Maximum Number of Entries",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Maximum number of Bins": {
+                                        "defaultValue": "100",
+                                        "description": "Specifies the maximum number of bins that can be held in memory at any one time",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Maximum number of Bins",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Minimum Group Size": {
+                                        "defaultValue": "0",
+                                        "description": "The minimum size of for the bundle",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Minimum Group Size",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Minimum Number of Entries": {
+                                        "defaultValue": "1",
+                                        "description": "The minimum number of files to include in a bundle",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Minimum Number of Entries",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "If the bundle cannot be created, all FlowFiles that would have been used to created the bundle will be transferred to failure",
+                                        "name": "failure"
+                                    },
+                                    {
+                                        "description": "The FlowFiles that were used to create the bundle",
+                                        "name": "original"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.BinFiles",
+                                "typeDescription": "Bins flow files into buckets based on the number of entries or size of entries"
+                            },
+                            {
+                                "propertyDescriptors": {
+                                    "Compression Format": {
+                                        "defaultValue": "use mime.type attribute",
+                                        "description": "The compression format to use.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Compression Format",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Compression Level": {
+                                        "defaultValue": "1",
+                                        "description": "The compression level to use; this is valid only when using GZIP compression.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Compression Level",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Mode": {
+                                        "defaultValue": "compress",
+                                        "description": "Indicates whether the processor should compress content or decompress content.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Mode",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Update Filename": {
+                                        "defaultValue": false,
+                                        "description": "Determines if filename extension need to be updated",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Update Filename",
+                                        "required": false,
+                                        "validator": "BOOLEAN_VALIDATOR"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "FlowFiles will be transferred to the failure relationship if they fail to compress/decompress",
+                                        "name": "failure"
+                                    },
+                                    {
+                                        "description": "FlowFiles will be transferred to the success relationship after successfully being compressed or decompressed",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.CompressContent",
+                                "typeDescription": "Compresses or decompresses the contents of FlowFiles using a user-specified compression algorithm and updates the mime.type attribute as appropriate"
+                            },
+                            {
+                                "propertyDescriptors": {
+                                    "Path": {
+                                        "description": "The path within the archive to focus (\"/\" to focus the total archive)",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Path",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "success operational on the flow record",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.FocusArchiveEntry",
+                                "typeDescription": "Allows manipulation of entries within an archive (e.g. TAR) by focusing on one entry within the archive at a time. When an archive entry is focused, that entry is treated as the content of the FlowFile and may be manipulated independently of the rest of the archive. To restore the FlowFile to its original state, use UnfocusArchiveEntry."
+                            },
+                            {
+                                "propertyDescriptors": {
+                                    "After": {
+                                        "description": "For operations which result in new entries, places the new entry after the entry specified by this property.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "After",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Before": {
+                                        "description": "For operations which result in new entries, places the new entry before the entry specified by this property.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Before",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Destination": {
+                                        "description": "Destination for operations (touch, move or copy) which result in new entries.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Destination",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Operation": {
+                                        "description": "Operation to perform on the archive (touch, remove, copy, move).",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Operation",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Target": {
+                                        "description": "An existing entry within the archive to perform the operation on.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Target",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "FlowFiles will be transferred to the failure relationship if the operation fails.",
+                                        "name": "failure"
+                                    },
+                                    {
+                                        "description": "FlowFiles will be transferred to the success relationship if the operation succeeds.",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.ManipulateArchive",
+                                "typeDescription": "Performs an operation which manipulates an archive without needing to split the archive into multiple FlowFiles."
+                            },
+                            {
+                                "propertyDescriptors": {
+                                    "Correlation Attribute Name": {
+                                        "description": "Correlation Attribute Name",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Correlation Attribute Name",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Delimiter Strategy": {
+                                        "defaultValue": "Filename",
+                                        "description": "Determines if Header, Footer, and Demarcator should point to files",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Delimiter Strategy",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Demarcator File": {
+                                        "description": "Filename specifying the demarcator to use",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Demarcator File",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Footer File": {
+                                        "description": "Filename specifying the footer to use",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Footer File",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Header File": {
+                                        "description": "Filename specifying the header to use",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Header File",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Keep Path": {
+                                        "defaultValue": false,
+                                        "description": "If using the Zip or Tar Merge Format, specifies whether or not the FlowFiles' paths should be included in their entry",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Keep Path",
+                                        "required": false,
+                                        "validator": "BOOLEAN_VALIDATOR"
+                                    },
+                                    "Max Bin Age": {
+                                        "description": "The maximum age of a Bin that will trigger a Bin to be complete. Expected format is <duration> <time unit>",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Max Bin Age",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Maximum Group Size": {
+                                        "description": "The maximum size for the bundle. If not specified, there is no maximum.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Maximum Group Size",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Maximum Number of Entries": {
+                                        "description": "The maximum number of files to include in a bundle. If not specified, there is no maximum.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Maximum Number of Entries",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Maximum number of Bins": {
+                                        "defaultValue": "100",
+                                        "description": "Specifies the maximum number of bins that can be held in memory at any one time",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Maximum number of Bins",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Merge Format": {
+                                        "defaultValue": "Binary Concatenation",
+                                        "description": "Merge Format",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Merge Format",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Merge Strategy": {
+                                        "defaultValue": "Defragment",
+                                        "description": "Defragment or Bin-Packing Algorithm",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Merge Strategy",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Minimum Group Size": {
+                                        "defaultValue": "0",
+                                        "description": "The minimum size of for the bundle",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Minimum Group Size",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Minimum Number of Entries": {
+                                        "defaultValue": "1",
+                                        "description": "The minimum number of files to include in a bundle",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Minimum Number of Entries",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "If the bundle cannot be created, all FlowFiles that would have been used to created the bundle will be transferred to failure",
+                                        "name": "failure"
+                                    },
+                                    {
+                                        "description": "The FlowFile containing the merged content",
+                                        "name": "merged"
+                                    },
+                                    {
+                                        "description": "The FlowFiles that were used to create the bundle",
+                                        "name": "original"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.MergeContent",
+                                "typeDescription": "Merges a Group of FlowFiles together based on a user-defined strategy and packages them into a single FlowFile. MergeContent should be configured with only one incoming connection as it won't create grouped Flow Files.This processor updates the mime.type attribute as appropriate."
+                            },
+                            {
+                                "supportedRelationships": [
+                                    {
+                                        "description": "success operational on the flow record",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.UnfocusArchiveEntry",
+                                "typeDescription": "Restores a FlowFile which has had an archive entry focused via FocusArchiveEntry to its original state."
+                            }
+                        ]
+                    },
+                    "artifact": "minifi-archive-extensions",
+                    "group": "org.apache.nifi.minifi",
+                    "version": "0.6.0"
+                },
+                {
+                    "componentManifest": {
+                        "processors": [
+                            {
+                                "propertyDescriptors": {
+                                    "GPSD Host": {
+                                        "defaultValue": "localhost",
+                                        "description": "The host running the GPSD daemon",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "GPSD Host",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "GPSD Port": {
+                                        "defaultValue": 2947,
+                                        "description": "The GPSD daemon port",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "GPSD Port",
+                                        "required": false,
+                                        "validator": "PORT_VALIDATOR"
+                                    },
+                                    "GPSD Wait Time": {
+                                        "defaultValue": 50000000,
+                                        "description": "Timeout value for waiting for data from the GPSD instance",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "GPSD Wait Time",
+                                        "required": false,
+                                        "validator": "LONG_VALIDATOR"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "All files are routed to success",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.GetGPS",
+                                "typeDescription": "Obtains GPS coordinates from the GPSDHost and port."
+                            }
+                        ]
+                    },
+                    "artifact": "minifi-gps",
+                    "group": "org.apache.nifi.minifi",
+                    "version": "0.6.0"
+                },
+                {
+                    "componentManifest": {
+                        "processors": [
+                            {
+                                "propertyDescriptors": {
+                                    "Broker URI": {
+                                        "description": "The URI to use to connect to the MQTT broker",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Broker URI",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Client ID": {
+                                        "description": "MQTT client ID to use",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Client ID",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Connection Timeout": {
+                                        "defaultValue": "30 sec",
+                                        "description": "Maximum time interval the client will wait for the network connection to the MQTT server",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Connection Timeout",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Keep Alive Interval": {
+                                        "defaultValue": "60 sec",
+                                        "description": "Defines the maximum time interval between messages sent or received",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Keep Alive Interval",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Max Flow Segment Size": {
+                                        "description": "Maximum flow content payload segment size for the MQTT record",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Max Flow Segment Size",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Password": {
+                                        "description": "Password to use when connecting to the broker",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Password",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Quality of Service": {
+                                        "defaultValue": "MQTT_QOS_0",
+                                        "description": "The Quality of Service(QoS) to send the message with. Accepts three values '0', '1' and '2'",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Quality of Service",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Queue Max Message": {
+                                        "description": "Maximum number of messages allowed on the received MQTT queue",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Queue Max Message",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Session state": {
+                                        "defaultValue": true,
+                                        "description": "Whether to start afresh or resume previous flows. See the allowable value descriptions for more details",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Session state",
+                                        "required": false,
+                                        "validator": "BOOLEAN_VALIDATOR"
+                                    },
+                                    "Topic": {
+                                        "description": "The topic to publish the message to",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Topic",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Username": {
+                                        "description": "Username to use when connecting to the broker",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Username",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "FlowFiles that are sent successfully to the destination are transferred to this relationship",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.ConsumeMQTT",
+                                "typeDescription": "This Processor gets the contents of a FlowFile from a MQTT broker for a specified topic. The the payload of the MQTT message becomes content of a FlowFile"
+                            },
+                            {
+                                "propertyDescriptors": {
+                                    "Broker URI": {
+                                        "description": "The URI to use to connect to the MQTT broker",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Broker URI",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Client ID": {
+                                        "description": "MQTT client ID to use",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Client ID",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Connection Timeout": {
+                                        "defaultValue": "30 sec",
+                                        "description": "Maximum time interval the client will wait for the network connection to the MQTT server",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Connection Timeout",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Keep Alive Interval": {
+                                        "defaultValue": "60 sec",
+                                        "description": "Defines the maximum time interval between messages sent or received",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Keep Alive Interval",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Max Flow Segment Size": {
+                                        "description": "Maximum flow content payload segment size for the MQTT record",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Max Flow Segment Size",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Password": {
+                                        "description": "Password to use when connecting to the broker",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Password",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Quality of Service": {
+                                        "defaultValue": "MQTT_QOS_0",
+                                        "description": "The Quality of Service(QoS) to send the message with. Accepts three values '0', '1' and '2'",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Quality of Service",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Retain": {
+                                        "defaultValue": false,
+                                        "description": "Retain MQTT published record in broker",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Retain",
+                                        "required": false,
+                                        "validator": "BOOLEAN_VALIDATOR"
+                                    },
+                                    "Session state": {
+                                        "defaultValue": true,
+                                        "description": "Whether to start afresh or resume previous flows. See the allowable value descriptions for more details",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Session state",
+                                        "required": false,
+                                        "validator": "BOOLEAN_VALIDATOR"
+                                    },
+                                    "Topic": {
+                                        "description": "The topic to publish the message to",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Topic",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Username": {
+                                        "description": "Username to use when connecting to the broker",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Username",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "FlowFiles that failed to send to the destination are transferred to this relationship",
+                                        "name": "failure"
+                                    },
+                                    {
+                                        "description": "FlowFiles that are sent successfully to the destination are transferred to this relationship",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.PublishMQTT",
+                                "typeDescription": "PublishMQTT serializes FlowFile content as an MQTT payload, sending the message to the configured topic and broker."
+                            }
+                        ]
+                    },
+                    "artifact": "minifi-mqtt-extensions",
+                    "group": "org.apache.nifi.minifi",
+                    "version": "0.6.0"
+                },
+                {
+                    "componentManifest": {
+                        "processors": [
+                            {
+                                "propertyDescriptors": {
+                                    "Base Directory": {
+                                        "defaultValue": "/tmp/",
+                                        "description": "Scratch directory for PCAP files",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Base Directory",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Batch Size": {
+                                        "defaultValue": 50,
+                                        "description": "The number of packets to combine within a given PCAP",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Batch Size",
+                                        "required": false,
+                                        "validator": "LONG_VALIDATOR"
+                                    },
+                                    "Capture Bluetooth": {
+                                        "defaultValue": false,
+                                        "description": "True indicates that we support bluetooth interfaces",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Capture Bluetooth",
+                                        "required": false,
+                                        "validator": "BOOLEAN_VALIDATOR"
+                                    },
+                                    "Network Controller": {
+                                        "defaultValue": ".*",
+                                        "description": "Regular expression of the network controller(s) to which we will attach",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Network Controller",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "All files are routed to success",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.CapturePacket",
+                                "typeDescription": "CapturePacket captures and writes one or more packets into a PCAP file that will be used as the content of a flow file. Configuration options exist to adjust the batching of PCAP files. PCAP batching will place a single PCAP into a flow file. A regular expression selects network interfaces. Bluetooth network interfaces can be selected through a separate option."
+                            }
+                        ]
+                    },
+                    "artifact": "minifi-pcap",
+                    "group": "org.apache.nifi.minifi",
+                    "version": "0.6.0"
+                },
+                {
+                    "componentManifest": {
+                        "processors": [
+                            {
+                                "propertyDescriptors": {
+                                    "Attributes to Send as Headers": {
+                                        "description": "Any attribute whose name matches the regex will be added to the Kafka messages as a Header",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Attributes to Send as Headers",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Batch Size": {
+                                        "description": "Maximum number of messages batched in one MessageSet",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Batch Size",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Client Name": {
+                                        "description": "Client Name to use when communicating with Kafka",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Client Name",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Compress Codec": {
+                                        "defaultValue": "none",
+                                        "description": "compression codec to use for compressing message sets",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Compress Codec",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Delivery Guarantee": {
+                                        "defaultValue": "1",
+                                        "description": "Specifies the requirement for guaranteeing that a message is sent to Kafka",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Delivery Guarantee",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Known Brokers": {
+                                        "description": "A comma-separated list of known Kafka Brokers in the format <host>:<port>",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Known Brokers",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Max Flow Segment Size": {
+                                        "description": "Maximum flow content payload segment size for the kafka record",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Max Flow Segment Size",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Max Request Size": {
+                                        "description": "Maximum Kafka protocol request message size",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Max Request Size",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Queue Buffering Max Time": {
+                                        "description": "Delay to wait for messages in the producer queue to accumulate before constructing message batches",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Queue Buffering Max Time",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Queue Max Buffer Size": {
+                                        "description": "Maximum total message size sum allowed on the producer queue",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Queue Max Buffer Size",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Queue Max Message": {
+                                        "description": "Maximum number of messages allowed on the producer queue",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Queue Max Message",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Request Timeout": {
+                                        "description": "The ack timeout of the producer request in milliseconds",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Request Timeout",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Security CA": {
+                                        "description": "File or directory path to CA certificate(s) for verifying the broker's key",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Security CA",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Security Cert": {
+                                        "description": "Path to client's public key (PEM) used for authentication",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Security Cert",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Security Pass Phrase": {
+                                        "description": "Private key passphrase",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Security Pass Phrase",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Security Private Key": {
+                                        "description": "Path to client's private key (PEM) used for authentication",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Security Private Key",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Security Protocol": {
+                                        "description": "Protocol used to communicate with brokers",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Security Protocol",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Topic Name": {
+                                        "description": "The Kafka Topic of interest",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Topic Name",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "Any FlowFile that cannot be sent to Kafka will be routed to this Relationship",
+                                        "name": "failure"
+                                    },
+                                    {
+                                        "description": "Any FlowFile that is successfully sent to Kafka will be routed to this Relationship",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.PublishKafka",
+                                "typeDescription": "This Processor puts the contents of a FlowFile to a Topic in Apache Kafka. The content of a FlowFile becomes the contents of a Kafka message. This message is optionally assigned a key by using the <Kafka Key> Property."
+                            }
+                        ]
+                    },
+                    "artifact": "minifi-rdkafka-extensions",
+                    "group": "org.apache.nifi.minifi",
+                    "version": "0.6.0"
+                },
+                {
+                    "componentManifest": {
+                        "processors": [
+                            {
+                                "propertyDescriptors": {
+                                    "Module Directory": {
+                                        "description": "Comma-separated list of paths to files and/or directories which\n                                                 contain modules required by the script",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Module Directory",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Script Body": {
+                                        "description": "Body of script to execute.\n                                            Only one of Script File or Script Body may be used",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Script Body",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Script Engine": {
+                                        "defaultValue": "python",
+                                        "description": "The engine to execute scripts (python, lua)",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Script Engine",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Script File": {
+                                        "description": "Path to script file to execute.\n                                            Only one of Script File or Script Body may be used",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Script File",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "Script failures",
+                                        "name": "failure"
+                                    },
+                                    {
+                                        "description": "Script successes",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.ExecuteScript",
+                                "typeDescription": "Executes a script given the flow file and a process session. The script is responsible for handling the incoming flow file (transfer to SUCCESS or remove, e.g.) as well as any flow files created by the script. If the handling is incomplete or incorrect, the session will be rolled back.Scripts must define an onTrigger function which accepts NiFi Context and Property objects. For efficiency, scripts are executed once when the processor is run, then the onTrigger method is called for each incoming flowfile. This enables scripts to keep state if they wish, although there will be a script context per concurrent task of the processor. In order to, e.g., compute an arithmetic sum based on incoming flow file information, set the concurrent tasks to 1."
+                            }
+                        ]
+                    },
+                    "artifact": "minifi-script-extensions",
+                    "group": "org.apache.nifi.minifi",
+                    "version": "0.6.0"
+                },
+                {
+                    "componentManifest": {
+                        "processors": [
+                            {
+                                "propertyDescriptors": {
+                                    "FPS": {
+                                        "defaultValue": "1",
+                                        "description": "Frames per second to capture from USB camera",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "FPS",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Format": {
+                                        "defaultValue": "PNG",
+                                        "description": "Frame format (currently only PNG and RAW are supported; RAW is a binary pixel buffer of RGB values)",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Format",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Height": {
+                                        "description": "Target height of image to capture from USB camera",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Height",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "USB Product ID": {
+                                        "defaultValue": "0x0",
+                                        "description": "USB Product ID of camera device, in hexadecimal format",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "USB Product ID",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "USB Serial No.": {
+                                        "description": "USB Serial No. of camera device",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "USB Serial No.",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "USB Vendor ID": {
+                                        "defaultValue": "0x0",
+                                        "description": "USB Vendor ID of camera device, in hexadecimal format",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "USB Vendor ID",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Width": {
+                                        "description": "Target width of image to capture from USB camera",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Width",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "Failures sent here",
+                                        "name": "failure"
+                                    },
+                                    {
+                                        "description": "Sucessfully captured images sent here",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.GetUSBCamera",
+                                "typeDescription": "Gets images from USB Video Class (UVC)-compatible devices. Outputs one flow file per frame at the rate specified by the FPS property in the format specified by the Format property."
+                            }
+                        ]
+                    },
+                    "artifact": "minifi-usb-camera-extensions",
+                    "group": "org.apache.nifi.minifi",
+                    "version": "0.6.0"
+                },
+                {
+                    "componentManifest": {
+                        "processors": [
+                            {
+                                "propertyDescriptors": {
+                                    "Template": {
+                                        "description": "Path to the input mustache template file",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Template",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "success operational on the flow record",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.ApplyTemplate",
+                                "typeDescription": "Applies the mustache template specified by the \"Template\" property and writes the output to the flow file content. FlowFile attributes are used as template parameters."
+                            }
+                        ]
+                    },
+                    "artifact": "minifi-bustache-extensions",
+                    "group": "org.apache.nifi.minifi",
+                    "version": "0.6.0"
+                },
+                {
+                    "componentManifest": {
+                        "controllerServices": [
+                            {
+                                "propertyDescriptors": {
+                                    "Battery Capacity Path": {
+                                        "description": "Path to the battery level",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Battery Capacity Path",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Battery Status Path": {
+                                        "description": "Path to the battery status ( Discharging/Battery )",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Battery Status Path",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Low Battery Threshold": {
+                                        "description": "Battery threshold before which we will aggressively reduce",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Low Battery Threshold",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Trigger Threshold": {
+                                        "description": "Battery threshold before which we consider a slow reduction",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Trigger Threshold",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Wait Period": {
+                                        "description": "Decay between checking threshold and determining if a reduction is needed",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Wait Period",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    }
+                                },
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.controllers.LinuxPowerManagerService",
+                                "typeDescription": "Linux power management service that enables control of power usage in the agent through Linux power management information"
+                            },
+                            {
+                                "propertyDescriptors": {
+                                    "Default Prioritizer": {
+                                        "description": "Sets this controller service as the default prioritizer for all comms",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Default Prioritizer",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Max Payload": {
+                                        "description": "Maximum payload for these network controllers",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Max Payload",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Max Throughput": {
+                                        "description": "Max throughput for these network controllers",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Max Throughput",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Network Controllers": {
+                                        "description": "Network controllers in order of priority for this prioritizer",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Network Controllers",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Verify Interfaces": {
+                                        "defaultValue": true,
+                                        "description": "Verify that interfaces are operational",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Verify Interfaces",
+                                        "required": false,
+                                        "validator": "BOOLEAN_VALIDATOR"
+                                    }
+                                },
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.controllers.NetworkPrioritizerService",
+                                "typeDescription": "Enables selection of networking interfaces on defined parameters to include ouput and payload size"
+                            },
+                            {
+                                "propertyDescriptors": {
+                                    "CA Certificate": {
+                                        "description": "CA certificate file",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "CA Certificate",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Client Certificate": {
+                                        "description": "Client Certificate",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Client Certificate",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Passphrase": {
+                                        "description": "Client passphrase. Either a file or unencrypted text",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Passphrase",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Private Key": {
+                                        "description": "Private Key file",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Private Key",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    }
+                                },
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.controllers.SSLContextService",
+                                "typeDescription": "Controller service that provides SSL/TLS capabilities to consuming interfaces"
+                            },
+                            {
+                                "propertyDescriptors": {
+                                    "Allow All Properties": {
+                                        "defaultValue": false,
+                                        "description": "Allows all properties, which are also not disallowed, to be updated",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Allow All Properties",
+                                        "required": false,
+                                        "validator": "BOOLEAN_VALIDATOR"
+                                    },
+                                    "Allowed Properties": {
+                                        "description": "Properties for which we will allow updates",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Allowed Properties",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Disallowed Properties": {
+                                        "description": "Properties for which we will not allow updates",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Disallowed Properties",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Persist Updates": {
+                                        "defaultValue": false,
+                                        "description": "Property that dictates whether updates should persist after a restart",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Persist Updates",
+                                        "required": false,
+                                        "validator": "BOOLEAN_VALIDATOR"
+                                    }
+                                },
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.controllers.UpdatePolicyControllerService",
+                                "typeDescription": "UpdatePolicyControllerService allows a flow specific policy on allowing or disallowing updates. Since the flow dictates the purpose of a device it will also be used to dictate updates to specific components."
+                            }
+                        ],
+                        "processors": [
+                            {
+                                "propertyDescriptors": {
+                                    "Hostname Attribute": {
+                                        "defaultValue": "source.hostname",
+                                        "description": "Flowfile attribute to used to record the agent's hostname",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Hostname Attribute",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "IP Attribute": {
+                                        "defaultValue": "source.ipv4",
+                                        "description": "Flowfile attribute to used to record the agent's IP address",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "IP Attribute",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Network Interface Name": {
+                                        "defaultValue": "eth0",
+                                        "description": "Network interface from which to read an IP v4 address",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Network Interface Name",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "success operational on the flow record",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.AppendHostInfo",
+                                "typeDescription": "Appends host information such as IP address and hostname as an attribute to incoming flowfiles."
+                            },
+                            {
+                                "propertyDescriptors": {
+                                    "Batch Duration": {
+                                        "defaultValue": "0 sec",
+                                        "description": "If the process is expected to be long-running and produce textual output, a batch duration can be specified.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Batch Duration",
+                                        "required": false,
+                                        "validator": "TIME_PERIOD_VALIDATOR"
+                                    },
+                                    "Command": {
+                                        "description": "Specifies the command to be executed; if just the name of an executable is provided, it must be in the user's environment PATH.",
+                                        "expressionLanguageScope": "FLOWFILE_ATTRIBUTES",
+                                        "name": "Command",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Command Arguments": {
+                                        "description": "The arguments to supply to the executable delimited by white space. White space can be escaped by enclosing it in double-quotes.",
+                                        "expressionLanguageScope": "FLOWFILE_ATTRIBUTES",
+                                        "name": "Command Arguments",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Redirect Error Stream": {
+                                        "defaultValue": false,
+                                        "description": "If true will redirect any error stream output of the process to the output stream.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Redirect Error Stream",
+                                        "required": false,
+                                        "validator": "BOOLEAN_VALIDATOR"
+                                    },
+                                    "Working Directory": {
+                                        "description": "The directory to use as the current working directory when executing the command",
+                                        "expressionLanguageScope": "FLOWFILE_ATTRIBUTES",
+                                        "name": "Working Directory",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "All created FlowFiles are routed to this relationship.",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.ExecuteProcess",
+                                "typeDescription": "Runs an operating system command specified by the user and writes the output of that command to a FlowFile. If the command is expected to be long-running,the Processor can output the partial data on a specified interval. When this option is used, the output is expected to be in textual format,as it typically does not make sense to split binary data on arbitrary time-based intervals."
+                            },
+                            {
+                                "propertyDescriptors": {
+                                    "Attribute": {
+                                        "description": "Attribute to set from content",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Attribute",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Size Limit": {
+                                        "defaultValue": 2097152,
+                                        "description": "Maximum number of bytes to read into the attribute. 0 for no limit. Default is 2MB.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Size Limit",
+                                        "required": false,
+                                        "validator": "LONG_VALIDATOR"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "success operational on the flow record",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.ExtractText",
+                                "typeDescription": "Extracts the content of a FlowFile and places it into an attribute."
+                            },
+                            {
+                                "propertyDescriptors": {
+                                    "Batch Size": {
+                                        "defaultValue": 1,
+                                        "description": "The number of FlowFiles to be transferred in each invocation",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Batch Size",
+                                        "required": false,
+                                        "validator": "INTEGER_VALIDATOR"
+                                    },
+                                    "Data Format": {
+                                        "allowableValues": [
+                                            {
+                                                "displayName": "Text",
+                                                "value": "Text"
+                                            },
+                                            {
+                                                "displayName": "Binary",
+                                                "value": "Binary"
+                                            }
+                                        ],
+                                        "defaultValue": "Binary",
+                                        "description": "Specifies whether the data should be Text or Binary",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Data Format",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "File Size": {
+                                        "defaultValue": "1 kB",
+                                        "description": "The size of the file that will be used",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "File Size",
+                                        "required": false,
+                                        "validator": "DATA_SIZE_VALIDATOR"
+                                    },
+                                    "Unique FlowFiles": {
+                                        "defaultValue": true,
+                                        "description": "If true, each FlowFile that is generated will be unique. If false, a random value will be generated and all FlowFiles",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Unique FlowFiles",
+                                        "required": false,
+                                        "validator": "BOOLEAN_VALIDATOR"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "success operational on the flow record",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.GenerateFlowFile",
+                                "typeDescription": "This processor creates FlowFiles with random data or custom content. GenerateFlowFile is useful for load testing, configuration, and simulation."
+                            },
+                            {
+                                "propertyDescriptors": {
+                                    "Batch Size": {
+                                        "defaultValue": 10,
+                                        "description": "The maximum number of files to pull in each iteration",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Batch Size",
+                                        "required": false,
+                                        "validator": "LONG_VALIDATOR"
+                                    },
+                                    "File Filter": {
+                                        "defaultValue": "[^\\.].*",
+                                        "description": "Only files whose names match the given regular expression will be picked up",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "File Filter",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Ignore Hidden Files": {
+                                        "defaultValue": true,
+                                        "description": "Indicates whether or not hidden files should be ignored",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Ignore Hidden Files",
+                                        "required": false,
+                                        "validator": "BOOLEAN_VALIDATOR"
+                                    },
+                                    "Input Directory": {
+                                        "defaultValue": ".",
+                                        "description": "The input directory from which to pull files",
+                                        "expressionLanguageScope": "FLOWFILE_ATTRIBUTES",
+                                        "name": "Input Directory",
+                                        "required": true,
+                                        "validator": "VALID"
+                                    },
+                                    "Keep Source File": {
+                                        "defaultValue": false,
+                                        "description": "If true, the file is not deleted after it has been copied to the Content Repository",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Keep Source File",
+                                        "required": false,
+                                        "validator": "BOOLEAN_VALIDATOR"
+                                    },
+                                    "Maximum File Age": {
+                                        "defaultValue": "0 sec",
+                                        "description": "The maximum age that a file must be in order to be pulled; any file older than this amount of time (according to last modification date) will be ignored",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Maximum File Age",
+                                        "required": false,
+                                        "validator": "TIME_PERIOD_VALIDATOR"
+                                    },
+                                    "Minimum File Age": {
+                                        "defaultValue": "0 sec",
+                                        "description": "The minimum age that a file must be in order to be pulled; any file younger than this amount of time (according to last modification date) will be ignored",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Minimum File Age",
+                                        "required": false,
+                                        "validator": "TIME_PERIOD_VALIDATOR"
+                                    },
+                                    "Minimum File Size": {
+                                        "defaultValue": "0 B",
+                                        "description": "The maximum size that a file can be in order to be pulled",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Minimum File Size",
+                                        "required": false,
+                                        "validator": "DATA_SIZE_VALIDATOR"
+                                    },
+                                    "Polling Interval": {
+                                        "defaultValue": "0 sec",
+                                        "description": "Indicates how long to wait before performing a directory listing",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Polling Interval",
+                                        "required": false,
+                                        "validator": "TIME_PERIOD_VALIDATOR"
+                                    },
+                                    "Recurse Subdirectories": {
+                                        "defaultValue": true,
+                                        "description": "Indicates whether or not to pull files from subdirectories",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Recurse Subdirectories",
+                                        "required": false,
+                                        "validator": "BOOLEAN_VALIDATOR"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "All files are routed to success",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.GetFile",
+                                "typeDescription": "Creates FlowFiles from files in a directory. MiNiFi will ignore files for which it doesn't have read permissions."
+                            },
+                            {
+                                "propertyDescriptors": {
+                                    "SSL Context Service": {
+                                        "typeProvidedByValue": {
+                                            "artifact": "minifi-system",
+                                            "group": "org.apache.nifi.minifi",
+                                            "type": "org.apache.nifi.minifi.controllers.SSLContextService"
+                                        },
+                                        "description": "SSL Context Service Name",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "SSL Context Service",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Stay Connected": {
+                                        "defaultValue": true,
+                                        "description": "Determines if we keep the same socket despite having no data",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Stay Connected",
+                                        "required": false,
+                                        "validator": "BOOLEAN_VALIDATOR"
+                                    },
+                                    "concurrent-handler-count": {
+                                        "defaultValue": 1,
+                                        "description": "Number of concurrent handlers for this session",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "concurrent-handler-count",
+                                        "required": false,
+                                        "validator": "INTEGER_VALIDATOR"
+                                    },
+                                    "connection-attempt-timeout": {
+                                        "defaultValue": 3,
+                                        "description": "Maximum number of connection attempts before attempting backup hosts, if configured",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "connection-attempt-timeout",
+                                        "required": false,
+                                        "validator": "INTEGER_VALIDATOR"
+                                    },
+                                    "end-of-message-byte": {
+                                        "defaultValue": "13",
+                                        "description": "Byte value which denotes end of message. Must be specified as integer within the valid byte range  (-128 thru 127). For example, '13' = Carriage return and '10' = New line. Default '13'.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "end-of-message-byte",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "endpoint-list": {
+                                        "description": "A comma delimited list of the endpoints to connect to. The format should be <server_address>:<port>.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "endpoint-list",
+                                        "required": true,
+                                        "validator": "VALID"
+                                    },
+                                    "receive-buffer-size": {
+                                        "defaultValue": "16 MB",
+                                        "description": "The size of the buffer to receive data in. Default 16384 (16MB).",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "receive-buffer-size",
+                                        "required": false,
+                                        "validator": "DATA_SIZE_VALIDATOR"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "Indicates an incomplete message as a result of encountering the end of message byte trigger",
+                                        "name": "partial"
+                                    },
+                                    {
+                                        "description": "All files are routed to success",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.GetTCP",
+                                "typeDescription": "Establishes a TCP Server that defines and retrieves one or more byte messages from clients"
+                            },
+                            {
+                                "propertyDescriptors": {
+                                    "Hash Algorithm": {
+                                        "defaultValue": "SHA256",
+                                        "description": "Name of the algorithm used to generate checksum",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Hash Algorithm",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Hash Attribute": {
+                                        "defaultValue": "Checksum",
+                                        "description": "Attribute to store checksum to",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Hash Attribute",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "failure operational on the flow record",
+                                        "name": "failure"
+                                    },
+                                    {
+                                        "description": "success operational on the flow record",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.HashContent",
+                                "typeDescription": "HashContent calculates the checksum of the content of the flowfile and adds it as an attribute. Configuration options exist to select hashing algorithm and set the name of the attribute."
+                            },
+                            {
+                                "propertyDescriptors": {
+                                    "Max Batch Size": {
+                                        "defaultValue": 1,
+                                        "description": "The maximum number of Syslog events to add to a single FlowFile.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Max Batch Size",
+                                        "required": false,
+                                        "validator": "INTEGER_VALIDATOR"
+                                    },
+                                    "Max Number of TCP Connections": {
+                                        "defaultValue": 2,
+                                        "description": "The maximum number of concurrent connections to accept Syslog messages in TCP mode.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Max Number of TCP Connections",
+                                        "required": false,
+                                        "validator": "INTEGER_VALIDATOR"
+                                    },
+                                    "Max Size of Socket Buffer": {
+                                        "defaultValue": "1 MB",
+                                        "description": "The maximum size of the socket buffer that should be used.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Max Size of Socket Buffer",
+                                        "required": false,
+                                        "validator": "DATA_SIZE_VALIDATOR"
+                                    },
+                                    "Message Delimiter": {
+                                        "defaultValue": "\n",
+                                        "description": "Specifies the delimiter to place between Syslog messages when multiple messages are bundled together (see <Max Batch Size> core::Property).",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Message Delimiter",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Parse Messages": {
+                                        "defaultValue": false,
+                                        "description": "Indicates if the processor should parse the Syslog messages. If set to false, each outgoing FlowFile will only.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Parse Messages",
+                                        "required": false,
+                                        "validator": "BOOLEAN_VALIDATOR"
+                                    },
+                                    "Port": {
+                                        "defaultValue": 514,
+                                        "description": "The port for Syslog communication",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Port",
+                                        "required": false,
+                                        "validator": "PORT_VALIDATOR"
+                                    },
+                                    "Protocol": {
+                                        "allowableValues": [
+                                            {
+                                                "displayName": "UDP",
+                                                "value": "UDP"
+                                            },
+                                            {
+                                                "displayName": "TCP",
+                                                "value": "TCP"
+                                            }
+                                        ],
+                                        "defaultValue": "UDP",
+                                        "description": "The protocol for Syslog communication.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Protocol",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Receive Buffer Size": {
+                                        "defaultValue": "65507 B",
+                                        "description": "The size of each buffer used to receive Syslog messages.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Receive Buffer Size",
+                                        "required": false,
+                                        "validator": "DATA_SIZE_VALIDATOR"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "SysLog message format invalid",
+                                        "name": "invalid"
+                                    },
+                                    {
+                                        "description": "All files are routed to success",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.ListenSyslog",
+                                "typeDescription": "Listens for Syslog messages being sent to a given port over TCP or UDP. Incoming messages are checked against regular expressions for RFC5424 and RFC3164 formatted messages. The format of each message is: (<PRIORITY>)(VERSION )(TIMESTAMP) (HOSTNAME) (BODY) where version is optional. The timestamp can be an RFC5424 timestamp with a format of \"yyyy-MM-dd'T'HH:mm:ss.SZ\" or \"yyyy-MM-dd'T'HH:mm:ss.S+hh:mm\", or it can be an RFC3164 timestamp with a format of \"MMM d HH:mm:ss\". If an incoming messages matches one of these patterns, the message will be parsed and the individual pieces will be placed in FlowFile attributes, with the original message in the content of the FlowFile. If an incoming message does not match one of these patterns it will not be parsed and the syslog.valid attribute will be set to false with the original message in the content of the FlowFile. Valid messages will be transferred on the success relationship, and invalid messages will be transferred on the invalid relationship."
+                            },
+                            {
+                                "propertyDescriptors": {
+                                    "Attributes to Ignore": {
+                                        "description": "A comma-separated list of Attributes to ignore. If not specified, no attributes will be ignored.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Attributes to Ignore",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Attributes to Log": {
+                                        "description": "A comma-separated list of Attributes to Log. If not specified, all attributes will be logged.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Attributes to Log",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Log Level": {
+                                        "allowableValues": [
+                                            {
+                                                "displayName": "debug",
+                                                "value": "debug"
+                                            },
+                                            {
+                                                "displayName": "error",
+                                                "value": "error"
+                                            },
+                                            {
+                                                "displayName": "info",
+                                                "value": "info"
+                                            },
+                                            {
+                                                "displayName": "trace",
+                                                "value": "trace"
+                                            },
+                                            {
+                                                "displayName": "warn",
+                                                "value": "warn"
+                                            }
+                                        ],
+                                        "description": "The Log Level to use when logging the Attributes",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Log Level",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Log Payload": {
+                                        "defaultValue": false,
+                                        "description": "If true, the FlowFile's payload will be logged, in addition to its attributes.otherwise, just the Attributes will be logged",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Log Payload",
+                                        "required": false,
+                                        "validator": "BOOLEAN_VALIDATOR"
+                                    },
+                                    "Log Prefix": {
+                                        "description": "Log prefix appended to the log lines. It helps to distinguish the output of multiple LogAttribute processors.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Log Prefix",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "success operational on the flow record",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.LogAttribute",
+                                "typeDescription": "Logs attributes of flow files in the MiNiFi application log."
+                            },
+                            {
+                                "propertyDescriptors": {
+                                    "Conflict Resolution Strategy": {
+                                        "allowableValues": [
+                                            {
+                                                "displayName": "fail",
+                                                "value": "fail"
+                                            },
+                                            {
+                                                "displayName": "ignore",
+                                                "value": "ignore"
+                                            },
+                                            {
+                                                "displayName": "replace",
+                                                "value": "replace"
+                                            }
+                                        ],
+                                        "defaultValue": "fail",
+                                        "description": "Indicates what should happen when a file with the same name already exists in the output directory",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Conflict Resolution Strategy",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Create Missing Directories": {
+                                        "dependentProperties": [
+                                            "Directory"
+                                        ],
+                                        "defaultValue": true,
+                                        "description": "If true, then missing destination directories will be created. If false, flowfiles are penalized and sent to failure.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Create Missing Directories",
+                                        "required": true,
+                                        "validator": "BOOLEAN_VALIDATOR"
+                                    },
+                                    "Directory": {
+                                        "defaultValue": ".",
+                                        "description": "The output directory to which to put files",
+                                        "expressionLanguageScope": "FLOWFILE_ATTRIBUTES",
+                                        "name": "Directory",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Maximum File Count": {
+                                        "defaultValue": -1,
+                                        "description": "Specifies the maximum number of files that can exist in the output directory",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Maximum File Count",
+                                        "required": false,
+                                        "validator": "INTEGER_VALIDATOR"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "Failed files (conflict, write failure, etc.) are transferred to failure",
+                                        "name": "failure"
+                                    },
+                                    {
+                                        "description": "All files are routed to success",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.PutFile",
+                                "typeDescription": "Writes the contents of a FlowFile to the local file system"
+                            },
+                            {
+                                "supportsDynamicProperties": true,
+                                "supportsDynamicRelationships": true,
+                                "type": "org.apache.nifi.minifi.processors.RouteOnAttribute",
+                                "typeDescription": "Routes FlowFiles based on their Attributes using the Attribute Expression Language."
+                            },
+                            {
+                                "propertyDescriptors": {
+                                    "File to Tail": {
+                                        "description": "Fully-qualified filename of the file that should be tailed",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "File to Tail",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "Input Delimiter": {
+                                        "description": "Specifies the character that should be used for delimiting the data being tailedfrom the incoming file.",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "Input Delimiter",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    },
+                                    "State File": {
+                                        "defaultValue": "TailFileState",
+                                        "description": "Specifies the file that should be used for storing state about what data has been ingested so that upon restart NiFi can resume from where it left off",
+                                        "expressionLanguageScope": "NONE",
+                                        "name": "State File",
+                                        "required": false,
+                                        "validator": "VALID"
+                                    }
+                                },
+                                "supportedRelationships": [
+                                    {
+                                        "description": "All files are routed to success",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": false,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.TailFile",
+                                "typeDescription": "\"Tails\" a file, or a list of files, ingesting data from the file as it is written to the file. The file is expected to be textual. Data is ingested only when a new line is encountered (carriage return or new-line character or combination). If the file to tail is periodically \"rolled over\", as is generally the case with log files, an optional Rolling Filename Pattern can be used to retrieve data from files that have rolled over, even if the rollover occurred while NiFi was not running (provided that the data still exists upon restart of NiFi). It is generally advisable to set the Run Schedule to a few seconds, rather than running with the default value of 0 secs, as this Processor will consume a lot of resources if scheduled very aggressively. At this time, this Processor does not support ingesting files that have been compressed when 'rolled over'."
+                            },
+                            {
+                                "supportedRelationships": [
+                                    {
+                                        "description": "Failed files are transferred to failure",
+                                        "name": "failure"
+                                    },
+                                    {
+                                        "description": "All files are routed to success",
+                                        "name": "success"
+                                    }
+                                ],
+                                "supportsDynamicProperties": true,
+                                "supportsDynamicRelationships": false,
+                                "type": "org.apache.nifi.minifi.processors.UpdateAttribute",
+                                "typeDescription": "This processor updates the attributes of a FlowFile using properties that are added by the user. This allows you to set default attribute changes that affect every FlowFile going through the processor, equivalent to the \"basic\" usage in Apache NiFi."
+                            }
+                        ]
+                    },
+                    "artifact": "minifi-system",
+                    "group": "org.apache.nifi.minifi",
+                    "version": "0.6.0"
+                }
+            ],
+            "schedulingDefaults": {
+                "defaultMaxConcurrentTasks": 1,
+                "defaultRunDurationNanos": 0,
+                "defaultSchedulingPeriodMillis": 1000,
+                "defaultSchedulingStrategy": "TIMER_DRIVEN",
+                "penalizationPeriodMillis": 30000,
+                "yieldDurationMillis": 1000
+            },
+            "agentType": "cpp"
+}

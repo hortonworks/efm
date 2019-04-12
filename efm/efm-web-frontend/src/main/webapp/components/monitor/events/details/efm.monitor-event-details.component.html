@@ -1,0 +1,26 @@
+<div class="efm-event-details"
+     [@routeAnimation]>
+    <div class="efm-event-details-event pad-md">
+        <div id="efm-event-details-title-container"
+             class="pad-bottom-md">
+            <mat-card-title class="ellipsis">
+                Event Details
+            </mat-card-title>
+            <div class="efm-event-details-close">
+                <button mat-icon-button
+                        tabindex="-1"
+                        (click)="cancel()">
+                    <mat-icon>
+                        close
+                    </mat-icon>
+                </button>
+            </div>
+        </div>
+        <div>
+        </div>
+        <div class="efm-event-details-scrollable push-bottom-md"
+             *ngIf="event">
+            <pre class="efm-event-details-pre">{{ eventDetail | json }}</pre>
+        </div>
+    </div>
+</div>
